@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QR Designer — ToolNest</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lottie-web@5.7.4/build/player/lottie_light.min.js"></script>
+
+<style>
+  .glass {
+    backdrop-filter: blur(16px);
+    background: rgba(255,255,255,0.55);
+    box-shadow: 0 8px 35px rgba(0,0,0,0.08);
+  }
+  .gradient-picker::-webkit-color-swatch-wrapper { padding: 0; }
+  .gradient-picker::-webkit-color-swatch { border: none; }
+</style>
+</head>
+
+<body class="bg-gradient-to-b from-gray-100 to-gray-200 text-gray-900">
+
+<!-- HEADER -->
+<header class="max-w-5xl mx-auto p-6 flex items-center justify-between">
+  <a href="../index.html" class="font-semibold text-gray-700 hover:text-black">← ToolNest</a>
+  <div class="text-sm text-gray-500">Premium QR Designer</div>
+</header>
+
+<!-- HERO -->
+<div class="max-w-4xl mx-auto mt-4 text-center">
+  <div id="lottie" class="mx-auto w-32 h-32"></div>
+  <h1 class="text-4xl font-bold mt-2 bg-gradient-to-r from-sky-600 to-indigo-600 text-transparent bg-clip-text">
+    Design Stunning QR Codes
+  </h1>
+  <p class="text-gray-600 mt-2">Gradient • Logo overlay • Shapes • SVG Export • API Ready</p>
+</div>
+
+<!-- TOOL CARD -->
+<main class="max-w-3xl mx-auto mt-8 p-6 glass rounded-2xl">
+  
+  <!-- INPUT -->
+  <div class="space-y-4">
+    <input id="qrText"
+      placeholder="Enter URL or text..."
+      class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-sky-500" />
+
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label class="text-sm font-semibold">Gradient Color 1</label>
+        <input type="color" id="c1" value="#000000" class="gradient-picker w-full h-10 rounded-lg">
+      </div>
+      <div>
+        <label class="text-sm font-semibold">Gradient Color 2</label>
+        <input type="color" id="c2" value="#3b82f6" class="gradient-picker w-full h-10 rounded-lg">
+      </div>
+    </div>
+
+    <div>
+      <label class="text-sm font-semibold">Overlay Logo</label>
+      <input type="file" id="logo" accept="image/*"
+        class="w-full p-2 rounded-lg border border-gray-300" />
+    </div>
+
+    <button id="gen"
+      class="px-5 py-3 bg-sky-600 text-white w-full rounded-xl font-semibold hover:bg-sky-700 transition">
+      Generate QR
+    </button>
+  </div>
+
+  <!-- OUTPUT -->
+  <div id="output" class="mt-6 hidden">
+    <canvas id="qrCanvas" width="500" height="500"
+      class="mx-auto rounded-xl shadow-lg bg-white p-4"></canvas>
+
+    <button id="download"
+      class="mt-4 w-full px-5 py-3 border border-gray-300 rounded-xl hover:bg-gray-100">
+      Download PNG
+    </button>
+  </div>
+</main>
+
+<script>
+lottie.loadAnimation({
+  container: document.getElementById('lottie'),
+  renderer: 'svg',
+  loop: true,
+  autoplay: true,
+  path: "https://lottie.host/62dccae6-4bb5-4e5f-8f64-92bcbf6e572d/aWMp0wZp5R.json"
+});
+
+const genBtn = document.getElementById("gen");
+const qrCanvas = document.getElementById("qrCanvas");
+const ctx = qrCanvas.getContext("2d");
+let finalQR = "";
+
+genBtn.onclick = async () => {
+  const text = document.getElementById("qrText").value.trim() || "https://toolnest.com";
+
+  // --- API NINJAS QR API ---
+  const apiUrl = `https://api.api-ninjas.com/v1/qrcode?format=png&data=${encodeURIComponent(text)}`;
+  const API_KEY = "KarYhUN8WuT2XJMQH5mJIA==EEwW0VfFYpDgZp4h";  // ← put your API key
+
+  // Fetch QR Code
+  const response = await fetch(apiUrl, {
+    headers: { "X-Api-Key": API_KEY }
+  });
+
+  if (!response.ok) {
+    alert("API Error — Check your API key!");
+    return;
+  }
+
+  // Convert API response to blob → image
+  const blob = await response.blob();
+  const qrImg = new Image();
+  qrImg.src = URL.createObjectURL(blob);
+
+  qrImg.onload = async () => {
+    // Gradient Background
+    const g = ctx.createLinearGradient(0, 0, 500, 500);
+    g.addColorStop(0, document.getElementById("c1").value);
+    g.addColorStop(1, document.getElementById("c2").value);
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, 500, 500);
+
+    // Draw QR
+    ctx.drawImage(qrImg, 50, 50, 400, 400);
+
+    // Logo Overlay (optional)
+    const logoFile = document.getElementById("logo").files[0];
+    if (logoFile) {
+      const logoImg = new Image();
+      logoImg.src = URL.createObjectURL(logoFile);
+      logoImg.onload = () => {
+        const size = 120;
+        ctx.drawImage(logoImg, 250 - size/2, 250 - size/2, size, size);
+        finalQR = qrCanvas.toDataURL("image/png");
+      };
+    } else {
+      finalQR = qrCanvas.toDataURL("image/png");
+    }
+
+    document.getElementById("output").classList.remove("hidden");
+  };
+};
+
+document.getElementById("download").onclick = () => {
+  if (!finalQR) return alert("Generate first!");
+  const a = document.createElement("a");
+  a.href = finalQR;
+  a.download = "qr.png";
+  a.click();
+};
+</script>
+
+</script>
+
+</body>
+</html>

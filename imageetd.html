@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ToolNest Pro Background Remover</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body { background: linear-gradient(135deg, #070c13, #111827); }
+  .card-glass { background: linear-gradient(180deg, rgba(7,12,19,0.52), rgba(7,12,19,0.7)); backdrop-filter: blur(15px); border-radius: 1rem; padding: 1rem; box-shadow: 0 8px 32px rgba(0,0,0,0.25); }
+  .hero-glow { position:absolute; top:50%; left:50%; width:500px; height:500px; transform:translate(-50%,-50%); background: radial-gradient(circle, rgba(96,165,250,0.14), transparent 70%); filter: blur(120px); pointer-events:none; z-index:0;}
+  button:hover { transform: scale(1.05); transition:0.2s; }
+</style>
+</head>
+<body class="text-white font-sans p-6 flex flex-col items-center min-h-screen">
+
+<h1 class="text-4xl md:text-5xl font-bold mb-6 text-[#0369a1]">ToolNest — Pro Background Remover</h1>
+
+<input type="file" id="upload" accept="image/*" class="mb-4 text-black p-2 rounded shadow"/>
+
+<div class="flex flex-col md:flex-row gap-6 w-full">
+
+  <!-- Canvas -->
+  <div class="flex flex-col items-center flex-1 relative card-glass canvas-container">
+    <h2 class="font-semibold mb-2 text-[#34d399]">Preview</h2>
+    <div class="hero-glow"></div>
+    <canvas id="canvas" class="border border-gray-700 rounded-lg bg-gray-800 max-w-full"></canvas>
+    <button id="downloadBtn" class="mt-4 bg-[#0369a1] text-white px-4 py-2 rounded hover:bg-[#60a5fa]">Download PNG</button>
+  </div>
+
+  <!-- Controls -->
+  <div class="flex flex-col gap-4 flex-1 card-glass">
+    <h2 class="font-semibold mb-2 text-[#fbbf24]">Resize & Filters</h2>
+    <label class="flex flex-col text-white">Width (px):
+      <input type="number" id="resizeWidth" placeholder="Original width" class="text-black p-1 rounded"/>
+    </label>
+    <label class="flex flex-col text-white">Height (px):
+      <input type="number" id="resizeHeight" placeholder="Original height" class="text-black p-1 rounded"/>
+    </label>
+    <button id="applyResize" class="bg-[#10b981] text-white px-4 py-2 rounded hover:bg-[#34d399]">Apply Resize</button>
+
+    <label class="flex flex-col text-white">Brightness:
+      <input type="range" id="brightness" min="0" max="200" value="100" class="accent-[#0369a1]"/>
+    </label>
+    <label class="flex flex-col text-white">Contrast:
+      <input type="range" id="contrast" min="0" max="200" value="100" class="accent-[#0369a1]"/>
+    </label>
+    <label class="flex flex-col text-white">Saturation:
+      <input type="range" id="saturation" min="0" max="200" value="100" class="accent-[#8b5cf6]"/>
+    </label>
+    <label class="flex flex-col text-white">Blur:
+      <input type="range" id="blur" min="0" max="10" value="0" step="0.1" class="accent-[#0369a1]"/>
+    </label>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+const upload = document.getElementById("upload");
+const downloadBtn = document.getElementById("downloadBtn");
+const resizeWidth = document.getElementById("resizeWidth");
+const resizeHeight = document.getElementById("resizeHeight");
+const applyResize = document.getElementById("applyResize");
+const brightnessSlider = document.getElementById("brightness");
+const contrastSlider = document.getElementById("contrast");
+const saturationSlider = document.getElementById("saturation");
+const blurSlider = document.getElementById("blur");
+
+let originalImgData = null;
+const API_KEY = "YOUR_API_KEY_HERE";
+
+// Helper: Convert dataURL to File
+function dataURLtoFile(dataurl, filename) {
+  const arr = dataurl.split(',');
+  const mime = arr[0].match(/:(.*?);/)[1];
+  const bstr = atob(arr[1]);
+  let n = bstr.length;
+  const u8arr = new Uint8Array(n);
+  while(n--){ u8arr[n] = bstr.charCodeAt(n); }
+  return new File([u8arr], filename, {type:mime});
+}
+
+// Upload Image
+upload.addEventListener("change", e => {
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    const img = new Image();
+    img.src = reader.result;
+    img.onload = () => {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img,0,0);
+      originalImgData = ctx.getImageData(0,0,canvas.width,canvas.height);
+      removeBackground(reader.result);
+    }
+  };
+  reader.readAsDataURL(file);
+});
+
+// Remove.bg API
+async function removeBackground(dataUrl){
+  try{
+    const formData = new FormData();
+    formData.append("image_file", dataURLtoFile(dataUrl,"upload.png"));
+    const res = await fetch("https://api.remove.bg/v1.0/removebg", {
+      method:"POST",
+      headers:{ "X-Api-Key": API_KEY },
+      body: formData
+    });
+    if(!res.ok){ alert("Remove.bg failed"); return; }
+    const blob = await res.blob();
+    const resultImg = new Image();
+    resultImg.src = URL.createObjectURL(blob);
+    resultImg.onload = ()=>{
+      canvas.width = resultImg.width;
+      canvas.height = resultImg.height;
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      ctx.drawImage(resultImg,0,0);
+      originalImgData = ctx.getImageData(0,0,canvas.width,canvas.height);
+      applyFilters();
+    };
+  }catch(err){ console.error(err); alert(err.message);}
+}
+
+// Resize
+applyResize.addEventListener("click", ()=>{
+  const w = parseInt(resizeWidth.value)||canvas.width;
+  const h = parseInt(resizeHeight.value)||canvas.height;
+  const tempCanvas = document.createElement("canvas");
+  tempCanvas.width=w; tempCanvas.height=h;
+  const tempCtx = tempCanvas.getContext("2d");
+  tempCtx.drawImage(canvas,0,0,w,h);
+  canvas.width=w; canvas.height=h;
+  ctx.clearRect(0,0,w,h);
+  ctx.drawImage(tempCanvas,0,0);
+  originalImgData = ctx.getImageData(0,0,canvas.width,canvas.height);
+  applyFilters();
+});
+
+// Filters
+function applyFilters(){
+  if(!originalImgData) return;
+  const data = new Uint8ClampedArray(originalImgData.data);
+  const imgData = new ImageData(data, originalImgData.width, originalImgData.height);
+  const b = brightnessSlider.value/100;
+  const c = contrastSlider.value/100;
+  const s = saturationSlider.value/100;
+  for(let i=0;i<data.length;i+=4){
+    for(let j=0;j<3;j++){ data[i+j]=data[i+j]*b; }
+    const factor=(259*(c*255+255))/(255*(259-(c*255)));
+    for(let j=0;j<3;j++){ data[i+j]=factor*(data[i+j]-128)+128; }
+    let gray=0.2989*data[i]+0.587*data[i+1]+0.114*data[i+2];
+    for(let j=0;j<3;j++){ data[i+j]=gray+(data[i+j]-gray)*s; }
+  }
+  ctx.putImageData(imgData,0,0);
+  canvas.style.filter=`blur(${blurSlider.value}px)`;
+}
+
+[brightnessSlider,contrastSlider,saturationSlider,blurSlider].forEach(slider=>slider.addEventListener("input",applyFilters));
+
+// Download
+downloadBtn.addEventListener("click",()=>{
+  const link=document.createElement("a");
+  link.download="toolnest_image.png";
+  link.href=canvas.toDataURL("image/png");
+  link.click();
+});
+</script>
+
+</body>
+</html>

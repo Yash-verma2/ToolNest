@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PDF Utilities — ToolNest</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- pdf-lib for merging -->
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
+<!-- jsPDF for image->PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  .glass{background:linear-gradient(180deg,#fff,#fbfbfb);box-shadow:0 6px 30px rgba(2,6,23,0.04);border:1px solid rgba(15,23,42,0.03)}
+</style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+<header class="max-w-4xl mx-auto p-6 flex items-center justify-between">
+  <a href="../index.html" class="text-sm font-semibold">← ToolNest</a>
+  <div class="text-sm text-gray-500">PDF Utilities</div>
+</header>
+
+<main class="max-w-4xl mx-auto p-6">
+  <div class="glass p-6 rounded-xl">
+    <h1 class="text-2xl font-bold">PDF Tools — Merge & Image→PDF</h1>
+    <p class="text-gray-600 mt-2">Merge multiple PDFs client-side and convert uploaded images into a single PDF.</p>
+
+    <div class="mt-4 grid md:grid-cols-2 gap-4">
+      <div class="p-4 bg-white rounded-lg">
+        <h3 class="font-semibold">Merge PDFs</h3>
+        <input id="pdfs" type="file" accept="application/pdf" multiple class="mt-2" />
+        <div class="mt-3">
+          <button id="mergeBtn" class="px-3 py-2 bg-sky-600 text-white rounded-lg">Merge</button>
+          <a id="mergedLink" class="ml-3 text-sm text-green-600 hidden">Download merged PDF</a>
+        </div>
+      </div>
+
+      <div class="p-4 bg-white rounded-lg">
+        <h3 class="font-semibold">Images → Single PDF</h3>
+        <input id="imgs" type="file" accept="image/*" multiple class="mt-2" />
+        <div class="mt-3">
+          <button id="img2pdf" class="px-3 py-2 bg-emerald-600 text-white rounded-lg">Convert</button>
+          <a id="imgPdfLink" class="ml-3 text-sm text-green-600 hidden">Download PDF</a>
+        </div>
+      </div>
+    </div>
+
+    <p class="text-xs text-gray-500 mt-4">Note: All operations are client-side for privacy. Large files may be slow on low-memory devices.</p>
+  </div>
+</main>
+
+<script>
+const { PDFDocument } = window.PDFLib;
+const mergeBtn = document.getElementById('mergeBtn');
+const mergedLink = document.getElementById('mergedLink');
+
+mergeBtn.addEventListener('click', async ()=>{
+  const files = document.getElementById('pdfs').files;
+  if(!files.length){ alert('Choose PDFs'); return; }
+  const mergedPdf = await PDFDocument.create();
+  for(const f of files){
+    const arr = await f.arrayBuffer();
+    const pdf = await PDFDocument.load(arr);
+    const copied = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+    copied.forEach(p => mergedPdf.addPage(p));
+  }
+  const bytes = await mergedPdf.save();
+  const blob = new Blob([bytes], {type:'application/pdf'});
+  const url = URL.createObjectURL(blob);
+  mergedLink.href = url; mergedLink.download = 'merged.pdf';
+  mergedLink.classList.remove('hidden');
+});
+
+const img2pdfBtn = document.getElementById('img2pdf');
+const imgPdfLink = document.getElementById('imgPdfLink');
+img2pdfBtn.addEventListener('click', async ()=>{
+  const files = document.getElementById('imgs').files;
+  if(!files.length){ alert('Choose images'); return; }
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({unit:'px',format:'a4'});
+  for(let i=0;i<files.length;i++){
+    const f = files[i];
+    const dataUrl = await new Promise(res => {
+      const r = new FileReader(); r.onload = ()=> res(r.result); r.readAsDataURL(f);
+    });
+    const img = new Image();
+    await new Promise((resolve)=>{ img.onload=resolve; img.src=dataUrl; });
+    const imgProps = { width: img.width, height: img.height };
+    const pdfWidth = doc.internal.pageSize.getWidth();
+    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+    if(i>0) doc.addPage();
+    doc.addImage(dataUrl, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+  }
+  const blob = doc.output('blob');
+  const url = URL.createObjectURL(blob);
+  imgPdfLink.href = url; imgPdfLink.download = 'images.pdf';
+  imgPdfLink.classList.remove('hidden');
+});
+</script>
+</body>
+</html>

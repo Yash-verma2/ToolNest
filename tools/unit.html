@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal Converter Pro</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Set up Tailwind configuration for dark mode and custom font -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary': '#4f46e5',
+                        'primary-dark': '#6366f1',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar for a cleaner look */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #6b7280; /* Gray-500 */
+            border-radius: 20px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1f2937; /* Gray-800 */
+        }
+        body {
+            /* Smooth background transition for dark/light mode */
+            transition: background-color 0.3s ease;
+        }
+        /* Custom focus state */
+        .unit-select:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.5); /* Primary color shadow */
+            border-color: #4f46e5;
+        }
+        /* Style for the button icon animation */
+        .swap-icon {
+            transition: transform 0.3s ease;
+        }
+        .swap-icon:active {
+            transform: rotate(180deg) scale(1.1);
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 font-sans min-h-screen flex items-center justify-center p-4">
+
+    <!-- Main Converter Card -->
+    <div id="converter-card" class="w-full max-w-4xl bg-white dark:bg-gray-800 shadow-2xl rounded-xl p-6 md:p-10 border border-gray-200 dark:border-gray-700 transition duration-300">
+
+        <!-- Header -->
+        <div class="flex justify-between items-start mb-6 border-b pb-4 border-gray-200 dark:border-gray-700">
+            <!-- Adjusted font size for mobile (text-2xl) and standard for larger screens (sm:text-3xl) -->
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white flex items-center">
+                <!-- Adjusted icon size for mobile (w-7 h-7) and standard for larger screens (sm:w-8 sm:h-8) -->
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-7 h-7 sm:w-8 sm:h-8 mr-3 text-primary-dark">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.773l-1.591 1.591M3 12H5.25m-.386-6.364l1.591 1.591M12 12A2.25 2.25 0 019.75 9.75v-1.5a2.25 2.25 0 014.5 0v1.5A2.25 2.25 0 0112 12zm0 0l-5.757 5.757m5.757-5.757L17.243 6.743" />
+                </svg>
+                Universal Converter
+            </h1>
+            <!-- Dark Mode Toggle -->
+            <button id="dark-mode-toggle" class="p-2 rounded-full text-gray-500 hover:text-primary-dark dark:text-gray-400 dark:hover:text-primary transition duration-200">
+                <svg xmlns="http://www.w3.org/2000/svg" id="sun-icon" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.773l-1.591 1.591M3 12H5.25m-.386-6.364l1.591 1.591" />
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" id="moon-icon" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 hidden">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a.75.75 0 01-.75.75h-15a.75.75 0 01-.75-.75V6.75m.75 0H12c.983 0 1.956.124 2.91.353a15.228 15.228 0 012.75 1.056l3.65-2.073V13.5m-5.49 5.49a15.225 15.225 0 01-1.056-2.75c-.229-.954-.353-1.927-.353-2.91H4.5" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Category Selector -->
+        <div class="mb-8">
+            <label for="category-select" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Select Category</label>
+            <select id="category-select" class="w-full p-3 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-primary focus:border-primary unit-select appearance-none cursor-pointer">
+            </select>
+        </div>
+
+        <!-- Ingredient Selector (New Feature) -->
+        <div id="ingredient-selector-group" class="mb-8 hidden">
+            <label for="ingredient-select" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 font-semibold text-primary dark:text-primary-dark">
+                Select Ingredient (For accurate Mass/Volume conversion)
+            </label>
+            <select id="ingredient-select" onchange="convertUnits()" class="w-full p-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-primary focus:border-primary unit-select appearance-none cursor-pointer">
+            </select>
+        </div>
+
+        <!-- Conversion Interface: grid-cols-1 for mobile, md:grid-cols-5 for desktop -->
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-6 items-center">
+
+            <!-- Input (From) Section -->
+            <div class="md:col-span-2">
+                <label for="input-value" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Value (From)</label>
+                <input type="number" id="input-value" placeholder="Enter value..." value="1"
+                       class="w-full p-4 text-xl bg-primary-dark/10 dark:bg-gray-900 text-gray-900 dark:text-white border border-primary dark:border-primary-dark rounded-lg shadow-inner focus:ring-primary focus:border-primary unit-select"
+                       oninput="convertUnits()">
+                <select id="from-unit" onchange="convertUnits()"
+                        class="mt-3 w-full p-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-primary focus:border-primary unit-select appearance-none cursor-pointer">
+                </select>
+            </div>
+
+            <!-- Swap Button: Vertically centered on desktop, with vertical padding on mobile -->
+            <div class="md:col-span-1 flex justify-center py-4 md:py-0">
+                <button id="swap-button" onclick="swapUnits()"
+                        class="p-4 bg-primary text-white rounded-full shadow-lg hover:bg-primary-dark transition duration-300 transform hover:scale-105"
+                        title="Swap Units">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6 swap-icon">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m2.25-13.5l4.5 4.5m0 0L16.5 12M21 7.5H7.5" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Output (To) Section -->
+            <div class="md:col-span-2">
+                <label for="output-value" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Result (To)</label>
+                <div class="relative">
+                    <input type="text" id="output-value" readonly placeholder="Result"
+                           class="w-full p-4 text-xl bg-gray-200 dark:bg-gray-700/50 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg shadow-inner focus:ring-primary focus:border-primary unit-select cursor-default"
+                           value="1">
+                    <button id="copy-button" onclick="copyResult()"
+                            class="absolute right-0 top-0 h-full px-4 text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary-dark transition duration-200"
+                            title="Copy to Clipboard">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v2.25A2.25 2.25 0 0113.5 22h-6a2.25 2.25 0 01-2.25-2.25V6.75A2.25 2.25 0 017.5 4.5h3.75m4.755-4.5h3.75m-3.75 0a2.25 2.25 0 012.25 2.25v2.25M15 15h2.25A2.25 2.25 0 0019.5 12V6.75A2.25 2.25 0 0017.25 4.5h-3.75M15 15L9.75 9.75" />
+                        </svg>
+                    </button>
+                </div>
+                <select id="to-unit" onchange="convertUnits()"
+                        class="mt-3 w-full p-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-primary focus:border-primary unit-select appearance-none cursor-pointer">
+                </select>
+            </div>
+        </div>
+
+        <!-- Message Box for Copy/Errors -->
+        <div id="message-box" class="mt-8 p-3 rounded-lg bg-green-100 dark:bg-green-800 border border-green-300 dark:border-border-green-600 text-green-800 dark:text-green-200 text-center font-medium hidden transition duration-300">
+            Result copied to clipboard!
+        </div>
+
+    </div>
+
+    <script>
+        // --- DATA DEFINITION: Units and Conversion Factors ---
+
+        // Ingredient Densities (Mass in grams per 1 milliliter (g/mL))
+        // This is the factor that links mass and volume for the "Ingredient Conversion" category
+        const INGREDIENT_DENSITIES = {
+            'Water (Base)': 1.0,
+            'All-Purpose Flour (Scooped)': 0.507, // ~120g per 236.588mL (1 cup)
+            'Granulated Sugar': 0.845,       // ~200g per 1 cup
+            'Butter (Solid)': 0.959,         // ~227g per 1 cup
+            'Honey': 1.42,
+            'Salt (Table)': 1.25,
+            'Milk (Whole)': 1.03,
+        };
+
+        // Standard units for Ingredient Conversion (Mass and Volume)
+        const INGREDIENT_UNITS = {
+            // Volume units (Factor to convert to the volume base: milliliter (mL))
+            'milliliter (mL)': 1,
+            'liter (L)': 1000,
+            'teaspoon (tsp)': 4.92892,
+            'tablespoon (tbsp)': 14.7868,
+            'cup (US)': 236.588,
+            'fluid ounce (fl oz)': 29.5735,
+            '--': 0, // Separator for Mass units
+            // Mass units (Factor to convert to the mass base: gram (g))
+            'gram (g)': 1,
+            'kilogram (kg)': 1000,
+            'ounce (oz)': 28.3495,
+            'pound (lb)': 453.592,
+        };
+        // Helper to check if a unit is mass or volume
+        function isMassUnit(unitName) {
+            return unitName.includes('(g)') || unitName.includes('(kg)') || unitName.includes('(oz)') || unitName.includes('(lb)');
+        }
+
+
+        const UNITS = {
+            'Length': {
+                base: 'meter',
+                units: {
+                    'meter': 1,
+                    'kilometer': 1000,
+                    'centimeter': 0.01,
+                    'millimeter': 0.001,
+                    'mile': 1609.344,
+                    'yard': 0.9144,
+                    'foot': 0.3048,
+                    'inch': 0.0254,
+                    'nautical mile': 1852,
+                }
+            },
+            'Mass': {
+                base: 'kilogram',
+                units: {
+                    'kilogram': 1,
+                    'gram': 0.001,
+                    'milligram': 0.000001,
+                    'pound': 0.45359237,
+                    'ounce': 0.0283495,
+                    'metric ton': 1000,
+                    'carat': 0.0002,
+                }
+            },
+            'Ingredient Conversion': {
+                isIngredient: true,
+                units: INGREDIENT_UNITS,
+                densities: INGREDIENT_DENSITIES
+            },
+            'Temperature': {
+                base: 'celsius', // Celsius is the arbitrary base for calculation
+                isTemperature: true,
+                units: {
+                    // Conversion to the base (Celsius) and back (from Celsius)
+                    'celsius': { toBase: (C) => C, fromBase: (C) => C },
+                    'fahrenheit': { toBase: (F) => (F - 32) * 5/9, fromBase: (C) => (C * 9/5) + 32 },
+                    'kelvin': { toBase: (K) => K - 273.15, fromBase: (C) => C + 273.15 }
+                }
+            },
+            'Data Storage': {
+                base: 'byte',
+                units: {
+                    'bit': 1/8,
+                    'byte': 1,
+                    'kilobyte (KB)': 1024,
+                    'megabyte (MB)': 1024 ** 2,
+                    'gigabyte (GB)': 1024 ** 3,
+                    'terabyte (TB)': 1024 ** 4,
+                }
+            },
+            'Volume': {
+                base: 'liter',
+                units: {
+                    'liter': 1,
+                    'milliliter': 0.001,
+                    'cubic meter': 1000,
+                    'gallon (US)': 3.78541,
+                    'quart (US)': 0.946353,
+                    'pint (US)': 0.473176,
+                }
+            },
+            'Time': {
+                base: 'second',
+                units: {
+                    'second': 1,
+                    'minute': 60,
+                    'hour': 3600,
+                    'day': 86400,
+                    'week': 604800,
+                    'year': 31536000,
+                }
+            }
+        };
+
+        // --- DOM Elements ---
+        const categorySelect = document.getElementById('category-select');
+        const ingredientSelectorGroup = document.getElementById('ingredient-selector-group');
+        const ingredientSelect = document.getElementById('ingredient-select');
+        const fromUnitSelect = document.getElementById('from-unit');
+        const toUnitSelect = document.getElementById('to-unit');
+        const inputValue = document.getElementById('input-value');
+        const outputValue = document.getElementById('output-value');
+        const messageBox = document.getElementById('message-box');
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        const sunIcon = document.getElementById('sun-icon');
+        const moonIcon = document.getElementById('moon-icon');
+
+        // --- Core Logic ---
+
+        // 1. Initialize Categories and Ingredients
+        function populateCategories() {
+            Object.keys(UNITS).forEach(category => {
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = category;
+                categorySelect.appendChild(option);
+            });
+
+            Object.keys(INGREDIENT_DENSITIES).forEach(ingredient => {
+                const option = document.createElement('option');
+                option.value = ingredient;
+                option.textContent = ingredient;
+                ingredientSelect.appendChild(option);
+            });
+
+            categorySelect.addEventListener('change', updateUnitSelectors);
+            updateUnitSelectors(); // Initial load
+        }
+
+        // 2. Update Unit Selectors (From/To) and Ingredient Selector visibility
+        function updateUnitSelectors() {
+            const selectedCategory = categorySelect.value;
+            const categoryData = UNITS[selectedCategory];
+
+            // Toggle visibility of the Ingredient Selector
+            if (categoryData.isIngredient) {
+                ingredientSelectorGroup.classList.remove('hidden');
+            } else {
+                ingredientSelectorGroup.classList.add('hidden');
+            }
+
+            // Clear existing options
+            fromUnitSelect.innerHTML = '';
+            toUnitSelect.innerHTML = '';
+
+            const unitNames = Object.keys(categoryData.units);
+
+            unitNames.forEach(unitName => {
+                // Skip the separator unit
+                if (unitName === '--') return;
+
+                const optionFrom = document.createElement('option');
+                optionFrom.value = unitName;
+                optionFrom.textContent = unitName;
+                fromUnitSelect.appendChild(optionFrom);
+
+                const optionTo = document.createElement('option');
+                optionTo.value = unitName;
+                optionTo.textContent = unitName;
+                toUnitSelect.appendChild(optionTo);
+            });
+
+            // Set initial selected units (e.g., first unit for 'from', second for 'to')
+            if (unitNames.length > 1) {
+                // If Ingredient, default to cup to gram
+                if (categoryData.isIngredient) {
+                    fromUnitSelect.value = 'cup (US)';
+                    toUnitSelect.value = 'gram (g)';
+                } else {
+                    fromUnitSelect.value = unitNames[0];
+                    toUnitSelect.value = unitNames[1];
+                }
+            }
+
+            convertUnits(); // Run conversion after updating selectors
+        }
+
+        // 3. Conversion Function
+        function convertUnits() {
+            const inputVal = parseFloat(inputValue.value);
+            const fromUnit = fromUnitSelect.value;
+            const toUnit = toUnitSelect.value;
+            const selectedCategory = categorySelect.value;
+            const categoryData = UNITS[selectedCategory];
+
+            if (isNaN(inputVal) || fromUnit === toUnit) {
+                outputValue.value = isNaN(inputVal) ? '0' : inputVal;
+                return;
+            }
+
+            let result = 0;
+
+            if (categoryData.isTemperature) {
+                // Special handling for Temperature (non-linear conversion)
+                const toBaseFunc = categoryData.units[fromUnit].toBase;
+                const fromBaseFunc = categoryData.units[toUnit].fromBase;
+
+                const baseValue = toBaseFunc(inputVal); // Convert input to base (Celsius)
+                result = fromBaseFunc(baseValue);      // Convert base (Celsius) to target unit
+
+            } else if (categoryData.isIngredient) {
+                // Special handling for Smart Ingredient Conversion (Mass/Volume using Density)
+                const density = INGREDIENT_DENSITIES[ingredientSelect.value];
+                const factorFrom = categoryData.units[fromUnit];
+                const factorTo = categoryData.units[toUnit];
+
+                const isFromMass = isMassUnit(fromUnit);
+                const isToMass = isMassUnit(toUnit);
+
+                if (isFromMass === isToMass) {
+                    // Scenario 1: Mass to Mass (g -> kg) OR Volume to Volume (cup -> mL)
+                    // Standard linear conversion logic applies
+                    const baseValue = inputVal * factorFrom;
+                    result = baseValue / factorTo;
+
+                } else if (isFromMass && !isToMass) {
+                    // Scenario 2: Mass (g) to Volume (mL)
+                    // 1. Convert input mass to grams: inputVal * factorFrom
+                    const mass_g = inputVal * factorFrom;
+                    // 2. Convert mass (g) to volume (mL) using density: mass_g / density
+                    const volume_mL = mass_g / density;
+                    // 3. Convert volume (mL) to target volume unit: volume_mL / factorTo
+                    result = volume_mL / factorTo;
+
+                } else if (!isFromMass && isToMass) {
+                    // Scenario 3: Volume (mL) to Mass (g)
+                    // 1. Convert input volume to mL: inputVal * factorFrom
+                    const volume_mL = inputVal * factorFrom;
+                    // 2. Convert volume (mL) to mass (g) using density: volume_mL * density
+                    const mass_g = volume_mL * density;
+                    // 3. Convert mass (g) to target mass unit: mass_g / factorTo
+                    result = mass_g / factorTo;
+                }
+
+            } else {
+                // Standard linear conversion (Length, Mass, Volume, Data, Time)
+                const factorFrom = categoryData.units[fromUnit];
+                const factorTo = categoryData.units[toUnit];
+
+                // 1. Convert input to the Base Unit
+                const baseValue = inputVal * factorFrom;
+                // 2. Convert Base Unit to the Target Unit
+                result = baseValue / factorTo;
+            }
+
+            // Display the result, fixed to 6 decimal places unless it's an integer
+            outputValue.value = parseFloat(result.toFixed(6));
+        }
+
+        // 4. Swap Function
+        function swapUnits() {
+            const temp = fromUnitSelect.value;
+            fromUnitSelect.value = toUnitSelect.value;
+            toUnitSelect.value = temp;
+            convertUnits(); // Recalculate after swap
+        }
+
+        // 5. Copy Function (using document.execCommand for iFrame compatibility)
+        function copyResult() {
+            outputValue.select();
+            outputValue.setSelectionRange(0, 99999); // For mobile devices
+            try {
+                // Use execCommand for broader compatibility in sandboxed environments
+                document.execCommand('copy');
+                // Show confirmation message
+                messageBox.textContent = `Copied: ${outputValue.value} ${toUnitSelect.value}!`;
+                messageBox.classList.remove('hidden', 'bg-red-100', 'border-red-300', 'text-red-800', 'dark:bg-red-800', 'dark:border-red-600', 'dark:text-red-200');
+                messageBox.classList.add('bg-green-100', 'border-green-300', 'text-green-800', 'dark:bg-green-800', 'dark:border-green-600', 'dark:text-green-200');
+                setTimeout(() => {
+                    messageBox.classList.add('hidden');
+                }, 2000);
+            } catch (err) {
+                messageBox.textContent = 'Failed to copy result.';
+                messageBox.classList.remove('hidden', 'bg-green-100', 'border-green-300', 'text-green-800', 'dark:bg-green-800', 'dark:border-green-600', 'dark:text-red-200');
+                messageBox.classList.add('bg-red-100', 'border-red-300', 'text-red-800', 'dark:bg-red-800', 'dark:border-red-600', 'dark:text-red-200');
+                setTimeout(() => {
+                    messageBox.classList.add('hidden');
+                }, 2000);
+            }
+        }
+
+        // 6. Dark Mode Toggle
+        function toggleDarkMode() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            } else {
+                document.documentElement.classList.add('dark');
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            }
+        }
+
+        // --- Initialization ---
+
+        window.onload = function() {
+            // Apply dark mode initially based on system preference
+            if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.documentElement.classList.add('dark');
+                moonIcon.classList.remove('hidden');
+                sunIcon.classList.add('hidden');
+            } else {
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            }
+
+            populateCategories();
+
+            // Set up event listeners
+            darkModeToggle.addEventListener('click', toggleDarkMode);
+            document.getElementById('swap-button').addEventListener('click', swapUnits);
+            ingredientSelect.addEventListener('change', convertUnits);
+
+            // Trigger initial conversion
+            convertUnits();
+        };
+
+    </script>
+</body>
+</html>
