@@ -2,46 +2,14 @@
 <html lang="en" data-theme="light">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>ToolNest — Smart Utility Tools for Everyone | Fast, Free & Powerful</title>
-
-  <meta name="google-site-verification" content="oFD9rQUzUexG-79hAg9jhI2Fhaib1xMuBKqDZDmuMIg" />
-
-  <meta name="description"
-        content="ToolNest offers powerful AI tools, utilities, generators and interactive features — fast, lightweight, and beautifully designed. Your all-in-one multi-tool hub." />
-
-  <!-- Keywords (optional but helpful) -->
-  <meta name="keywords"
-        content="ToolNest, online tools, utility hub, free tools, AI tools, generators, utilities, productivity tools, immersive tool hub, wishcraft, studymate, meme maker, pdf tools" />
-
-  <!-- Open Graph (for Facebook, LinkedIn, WhatsApp Preview) -->
-  <meta property="og:title" content="ToolNest — Immersive Utility Hub" />
-  <meta property="og:description" content="Experience powerful tools in a beautiful, interactive interface." />
-  <meta property="og:url" content="https://yourwebsite.com" />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="https://yourwebsite.com/preview.jpg" />
-
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="ToolNest — Immersive Utility Hub" />
-  <meta name="twitter:description" content="All your top tools in one elegant interface." />
-  <meta name="twitter:image" content="https://yourwebsite.com/preview.jpg" />
-
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DCHLRV9QKD"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-DCHLRV9QKD');
-  </script>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ToolNest — Smart Utility Tools for Everyone</title>
+  <meta name="description" content="ToolNest — lightweight, private, and beautifully designed utilities." />
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="manifest" href="./manifest.json">
   <meta name="theme-color" content="#0369a1">
   <!-- iOS Support -->
-  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
   <meta name="apple-mobile-web-app-status-bar" content="#0369a1">
 
   <style>
@@ -112,18 +80,6 @@
       transition: background 0.2s;
     }
     #installBtn:hover { background-color: #0284c7; }
-
-    /* Debug Box */
-    #debug-status {
-      font-family: monospace;
-      font-size: 12px;
-      margin-top: 40px;
-      padding: 20px;
-      background: #eee;
-      color: #333;
-      border-radius: 8px;
-      white-space: pre-wrap;
-    }
   </style>
 </head>
 <body>
@@ -185,10 +141,10 @@
     <!-- HERO -->
     <section class="grid md:grid-cols-2 gap-8 items-center py-12 lg:py-20">
       <div>
-        <p class="text-sm font-medium text-gray-500 mb-3">Currently featuring <span id="toolCount" class="font-bold text-sky-600">...</span> primary utility tools.</p>
+        <p class="text-sm font-medium text-gray-500 mb-3">Currently featuring <span id="toolCount" class="font-bold text-sky-600">...</span> primary utilities.</p>
         <span class="text-xs font-bold text-sky-600 uppercase tracking-widest bg-sky-100 px-3 py-1 rounded-full">2025 Utility Redefined</span>
         <h2 class="text-4xl sm:text-5xl font-extrabold mt-4">The <span class="text-sky-600">Immersive</span> Utility Hub.</h2>
-        <p class="mt-4 text-gray-600 max-w-xl">Lightweight, private, and visually focused — your all-in-one hub for smart utility tools that work fast on any device.</p>
+        <p class="mt-4 text-gray-600 max-w-xl">Lightweight, private, and visually focused — tools that work fast on any device.</p>
 
         <div class="mt-6 flex flex-col sm:flex-row gap-4">
           <a href="#tools" class="pressable px-6 py-3 bg-sky-600 text-white rounded-xl font-semibold shadow-sm text-center">Explore Tools</a>
@@ -280,8 +236,8 @@
         <!-- WishCraft -->
         <a href="https://wishcraft-yash.onrender.com" 
            class="tool-card glass p-5 rounded-2xl border border-gray-200 group hover:shadow-lg transition-all relative overflow-hidden"
-           data-search="WishCraft wish craft AI generator birthday anniversary invitation card generator celebration page AI"
-           data-category="WishCraft" aria-label="WishCraft - AI Celebration Page Generator">
+           data-search="WishCraft,wishcraft,anniversary,celebration,page generator"
+           data-category="WishCraft" aria-label="WishCraft">
           <div class="absolute top-3 right-3">
             <svg class="w-5 h-5 text-yellow-400 drop-shadow-lg" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 2l3 7h7l-5.5 4 2 7-6-4-6 4 2-7L2 9h7l3-7z"/>
@@ -317,8 +273,8 @@
          <!-- StudyMate -->
         <a href="https://yash-verma2.github.io/studymate-site/" 
            class="tool-card glass p-5 rounded-2xl border border-gray-200 group hover:shadow-lg transition-all" 
-           data-search="StudyMate MCQ Generator Notes Summaries AI Chatbot education study tool" 
-           data-category="education" aria-label="StudyMate - AI Education Tool">
+           data-search="StudyMate MCQ Generator Notes Summaries Chatbot" 
+           data-category="education" aria-label="StudyMate Tool">
           <div class="flex flex-col h-full justify-between">
             <div class="flex items-start gap-4">
               <div class="w-12 h-12 rounded-xl bg-white/80 flex items-center justify-center shadow-sm">
@@ -345,9 +301,7 @@
         </a>
 
         <!-- Meme Maker -->
-        <a href="tools/meme.html" class="tool-card glass p-5 rounded-2xl border border-gray-200 group" 
-           data-search="Meme Maker Create social-ready memes image editor text stickers download PNG fun tool" 
-           data-category="fun" aria-label="Meme Maker - Social Image Creator">
+        <a href="tools/meme.html" class="tool-card glass p-5 rounded-2xl border border-gray-200 group" data-search="Meme Maker Create social-ready memes image upload text stickers download PNG" data-category="fun" aria-label="Meme Maker">
           <div class="flex flex-col h-full justify-between">
             <div class="flex items-start gap-4">
               <div class="w-12 h-12 rounded-lg bg-white/80 flex items-center justify-center shadow-sm">
@@ -366,9 +320,7 @@
         </a>
 
         <!-- PDF Utilities -->
-        <a href="tools/pdf.html" class="tool-card glass p-5 rounded-2xl border border-gray-200 group" 
-           data-search="PDF Utilities Merge PDFs compress images convert images to PDF offline pdf tool" 
-           data-category="pdf" aria-label="PDF Utilities - Merge, Convert, and Compress PDFs">
+        <a href="tools/pdf.html" class="tool-card glass p-5 rounded-2xl border border-gray-200 group" data-search="PDF Utilities Merge PDFs compress images convert images to PDF" data-category="pdf" aria-label="PDF Utilities">
           <div class="flex flex-col h-full justify-between">
             <div class="flex items-start gap-4">
               <div class="w-12 h-12 rounded-lg bg-white/80 flex items-center justify-center shadow-sm">
@@ -397,12 +349,6 @@
         </div>
       </div>
     </section>
-
-    <!-- DEBUG STATUS SECTION -->
-    <div class="max-w-6xl mx-auto px-4 mb-10">
-        <h3 class="font-bold text-red-600">System Status (Debug Mode)</h3>
-        <div id="debug-status">Initializing...</div>
-    </div>
 
     <!-- Contact CTA -->
     <section id="contact" class="py-12 bg-gray-900 rounded-2xl mb-10 text-white scroll-fade-in">
@@ -519,9 +465,9 @@
     });
 
     // ====== Desktop modal open/close & populate categories ======
-    const allCats = ['all','qr','image','pdf','background','fun','WishCraft', 'education']; // Added 'education'
+    const allCats = ['all','qr','image','pdf','background','fun','WishCraft'];
     function populateCategoryModal(){
-      allCategoriesList.innerHTML = allCats.map(c => `<div class="p-3 rounded-xl bg-white/50 dark:bg-white/5 text-center cursor-pointer">${c.toUpperCase().replace('WISHCRAFT', 'GENERATORS').replace('EDUCATION', 'AI/EDUCATION')}</div>`).join('');
+      allCategoriesList.innerHTML = allCats.map(c => `<div class="p-3 rounded-xl bg-white/50 dark:bg-white/5 text-center cursor-pointer">${c.toUpperCase()}</div>`).join('');
       // add click handlers
       Array.from(allCategoriesList.children).forEach((el, idx) => {
         el.addEventListener('click', () => {
@@ -619,48 +565,22 @@
   </script>
 
   <script>
-    // --- DEBUGGING & PWA INSTALLATION LOGIC ---
-    const debugBox = document.getElementById('debug-status');
-    function log(msg) {
-      console.log(msg);
-      debugBox.textContent += msg + '\n';
-    }
-
-    log('Starting System Check...');
-
-    // 1. Check Secure Context (Required for PWA)
-    if (!window.isSecureContext) {
-      log('ERROR: Site is NOT in a secure context (HTTPS or localhost). PWA will not work.');
-    } else {
-      log('OK: Secure context detected.');
-    }
-
+    // --- PWA INSTALLATION LOGIC ---
     let deferredPrompt;
-
-    // 2. Register Service Worker
+    
+    // 1. Register Service Worker
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        // Ensure the path is correct
-        navigator.serviceWorker.register('./sw.js') 
-          .then(reg => {
-             log('OK: Service Worker Registered. Scope: ' + reg.scope);
-             // Force update if available
-             if (reg.waiting) {
-               log('INFO: New SW waiting. Updating...');
-               reg.waiting.postMessage({ type: 'SKIP_WAITING' });
-             }
-          })
-          .catch(err => {
-            log('ERROR: Service Worker Failed to Register. ' + err);
-          });
+        // Changed path to ./sw.js for safety
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('[SW] Registered', reg))
+          .catch(err => console.log('[SW] Failed', err));
       });
-    } else {
-      log('ERROR: Browser does not support Service Workers.');
     }
 
-    // 3. Handle Install Prompt
+    // 2. Handle Install Prompt
     window.addEventListener('beforeinstallprompt', (e) => {
-      log('SUCCESS: beforeinstallprompt fired! App is installable.');
+      console.log('[PWA] beforeinstallprompt fired!');
       e.preventDefault();
       deferredPrompt = e;
 
@@ -678,21 +598,15 @@
       }
     });
 
-    window.addEventListener('appinstalled', () => {
-      log('SUCCESS: App was installed successfully.');
-      // Optionally hide the button after install
-      document.getElementById('installBtn').style.display = 'none';
-      document.getElementById('installBtnMobile').classList.add('hidden');
-    });
-
     function installApp() {
       if (!deferredPrompt) return;
       deferredPrompt.prompt();
       deferredPrompt.userChoice.then(choice => {
-        log('User choice: ' + choice.outcome);
-        // Prompt is only valid once
+        console.log('[PWA] User choice:', choice.outcome);
         deferredPrompt = null;
-        // The 'appinstalled' event handles hiding the buttons if successful
+        // Hide buttons after install
+        document.getElementById('installBtn').style.display = 'none';
+        document.getElementById('installBtnMobile').classList.add('hidden');
       });
     }
   </script>
