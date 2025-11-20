@@ -2,13 +2,47 @@
 <html lang="en" data-theme="light">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ToolNest — Smart Utility Tools for Everyone</title>
-  <meta name="description" content="ToolNest — lightweight, private, and beautifully designed utilities." />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#0369a1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <title>ToolNest — Smart Utility Tools for Everyone | Fast, Free & Powerful</title>
+
+  <meta name="google-site-verification" content="oFD9rQUzUexG-79hAg9jhI2Fhaib1xMuBKqDZDmuMIg" />
+
+  <meta name="description"
+        content="ToolNest offers powerful AI tools, utilities, generators and interactive features — fast, lightweight, and beautifully designed. Your all-in-one multi-tool hub." />
+
+  <!-- Keywords (optional but helpful) -->
+  <meta name="keywords"
+        content="ToolNest, online tools, utility hub, free tools, AI tools, generators, utilities, productivity tools, immersive tool hub, wishcraft, studymate, meme maker, pdf tools" />
+
+  <!-- Open Graph (for Facebook, LinkedIn, WhatsApp Preview) -->
+  <meta property="og:title" content="ToolNest — Immersive Utility Hub" />
+  <meta property="og:description" content="Experience powerful tools in a beautiful, interactive interface." />
+  <meta property="og:url" content="https://yourwebsite.com" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://yourwebsite.com/preview.jpg" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ToolNest — Immersive Utility Hub" />
+  <meta name="twitter:description" content="All your top tools in one elegant interface." />
+  <meta name="twitter:image" content="https://yourwebsite.com/preview.jpg" />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DCHLRV9QKD"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DCHLRV9QKD');
+  </script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#0369a1">
+  <!-- iOS Support -->
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <meta name="apple-mobile-web-app-status-bar" content="#0369a1">
 
   <style>
     :root{
@@ -66,6 +100,30 @@
 
     /* small utilities */
     .pressable:active { transform: translateY(1px) scale(0.998); }
+    
+    /* Install Button Style */
+    #installBtn {
+      display: none; /* Hidden by default */
+      background-color: #0369a1;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    #installBtn:hover { background-color: #0284c7; }
+
+    /* Debug Box */
+    #debug-status {
+      font-family: monospace;
+      font-size: 12px;
+      margin-top: 40px;
+      padding: 20px;
+      background: #eee;
+      color: #333;
+      border-radius: 8px;
+      white-space: pre-wrap;
+    }
   </style>
 </head>
 <body>
@@ -81,8 +139,8 @@
       <a href="#search" class="mobile-nav-link text-gray-700">Search</a>
       <a href="#trust" class="mobile-nav-link text-gray-700">Why Trust Us</a>
       <a href="about.html" class="mobile-nav-link text-gray-700">About</a>
-      <!-- Your custom Install button (initially hidden) -->
-  <button id="installBtn" style="display:none;">Install App</button>
+      <!-- Custom Install Button Mobile -->
+      <button id="installBtnMobile" class="hidden px-4 py-2 bg-emerald-600 text-white rounded-xl text-center font-bold shadow-md">Install App</button>
       <a href="https://instagram.com/yash_verma_690" class="mt-4 px-4 py-3 bg-sky-600 text-white rounded-xl text-center">Instagram</a>
     </nav>
   </div>
@@ -104,8 +162,9 @@
         <a href="#tools" class="text-gray-600 hover:text-sky-700 transition">Tools</a>
         <a href="#trust" class="text-gray-600 hover:text-sky-700 transition">Trust</a>
         <a href="about.html" class="text-gray-600 hover:text-sky-700 transition">About</a>
-        <!-- Your custom Install button (initially hidden) -->
-  <button id="installBtn" style="display:none;">Install App</button>
+        
+        <!-- Desktop Install Button -->
+        <button id="installBtn" class="hidden">Install App</button>
 
         <button id="themeToggle" class="px-3 py-2 rounded-lg glass" aria-pressed="false" title="Toggle theme">
           <svg id="themeIcon" class="w-5 h-5" viewBox="0 0 24 24" fill="none"><path d="M12 7a5 5 0 100 10 5 5 0 000-10z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -123,22 +182,19 @@
   </header>
 
   <main class="max-w-6xl mx-auto px-4 relative">
-
     <!-- HERO -->
     <section class="grid md:grid-cols-2 gap-8 items-center py-12 lg:py-20">
       <div>
-        <p class="text-sm font-medium text-gray-500 mb-3">Currently featuring <span id="toolCount" class="font-bold text-sky-600">...</span> primary utilities.</p>
+        <p class="text-sm font-medium text-gray-500 mb-3">Currently featuring <span id="toolCount" class="font-bold text-sky-600">...</span> primary utility tools.</p>
         <span class="text-xs font-bold text-sky-600 uppercase tracking-widest bg-sky-100 px-3 py-1 rounded-full">2025 Utility Redefined</span>
         <h2 class="text-4xl sm:text-5xl font-extrabold mt-4">The <span class="text-sky-600">Immersive</span> Utility Hub.</h2>
-        <p class="mt-4 text-gray-600 max-w-xl">Lightweight, private, and visually focused — tools that work fast on any device.</p>
+        <p class="mt-4 text-gray-600 max-w-xl">Lightweight, private, and visually focused — your all-in-one hub for smart utility tools that work fast on any device.</p>
 
         <div class="mt-6 flex flex-col sm:flex-row gap-4">
           <a href="#tools" class="pressable px-6 py-3 bg-sky-600 text-white rounded-xl font-semibold shadow-sm text-center">Explore Tools</a>
           <a href="#trust" class="pressable px-6 py-3 border-2 border-gray-200 rounded-xl glass text-center">Why ToolNest?</a>
         </div>
       </div>
-
-      <!-- side (placeholder) -->
       <div class="hidden md:block"></div>
     </section>
 
@@ -148,7 +204,6 @@
         <h3 class="text-2xl md:text-3xl font-extrabold">Built on Speed, Trust, and Impeccable Design.</h3>
         <p class="mt-2 text-gray-600">The professional standard for client-side performance.</p>
       </div>
-
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-8 px-6">
         <div class="text-center p-4 glass rounded-xl">
           <p class="text-4xl font-extrabold text-sky-600">100%</p>
@@ -201,7 +256,6 @@
             </div>
           </div>
         </div>
-
         <div>
           <button id="openCategoriesDesktop" class="px-4 py-2 rounded-lg bg-yellow-400 text-white">Open Categories</button>
         </div>
@@ -222,116 +276,78 @@
 
       <!-- Tools Grid -->
       <div id="toolsGrid" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        <!-- Tool card example 1 -->
-      <!-- Tool Card Example -->
-<a href="https://wishcraft-yash.onrender.com" 
-   class="tool-card glass p-5 rounded-2xl border border-gray-200 group hover:shadow-lg transition-all relative overflow-hidden"
-   data-search="WishCraft,wishcraft,anniversary,celebration,page generator"
-   data-category="WishCraft"
-   aria-label="WishCraft">
-
-  <!-- Pinned Icon (small, crisp, top-right) -->
-  <div class="absolute top-3 right-3">
-    <svg class="w-5 h-5 text-yellow-400 drop-shadow-lg" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12 2l3 7h7l-5.5 4 2 7-6-4-6 4 2-7L2 9h7l3-7z"/>
-    </svg>
-  </div>
-
-  <div class="flex flex-col h-full justify-between">
-
-    <!-- Top Section -->
-    <div class="flex items-start gap-4">
-      <div class="w-12 h-12 rounded-xl bg-white/90 flex items-center justify-center shadow-md">
-       <svg class="w-7 h-7 text-sky-500" viewBox="0 0 24 24" fill="none">
-  <!-- Gift Box -->
-  <rect x="3" y="8" width="18" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="1.5"/>
-  <!-- Ribbon Vertical -->
-  <path d="M12 8v13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-  <!-- Ribbon Horizontal -->
-  <path d="M3 14h18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-  <!-- Bow -->
-  <path d="M12 3c1.5 1 3 3 0 5-3-2-1.5-4-0-5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-
-      </div>
-      <div>
-        <h4 class="font-bold text-lg text-gray-900">WishCraft</h4>
-        <p class="text-sm text-gray-600">Create beautiful celebration pages in seconds.</p>
-      </div>
-    </div>
-
-    <!-- Footer -->
-    <div class="mt-4 flex items-center justify-between">
-      <div class="text-sm text-sky-600 font-bold flex items-center gap-1">
-        Launch Tool
-        <svg class="w-4 h-4 transform transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 24 24" fill="none">
-          <path d="M5 12h14m-7-7l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
-      <div class="text-xs text-gray-400">The Best ✨</div>
-    </div>
-
-  </div>
-</a>
-
-
+        
+        <!-- WishCraft -->
+        <a href="https://wishcraft-yash.onrender.com" 
+           class="tool-card glass p-5 rounded-2xl border border-gray-200 group hover:shadow-lg transition-all relative overflow-hidden"
+           data-search="WishCraft wish craft AI generator birthday anniversary invitation card generator celebration page AI"
+           data-category="WishCraft" aria-label="WishCraft - AI Celebration Page Generator">
+          <div class="absolute top-3 right-3">
+            <svg class="w-5 h-5 text-yellow-400 drop-shadow-lg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2l3 7h7l-5.5 4 2 7-6-4-6 4 2-7L2 9h7l3-7z"/>
+            </svg>
+          </div>
+          <div class="flex flex-col h-full justify-between">
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 rounded-xl bg-white/90 flex items-center justify-center shadow-md">
+               <svg class="w-7 h-7 text-sky-500" viewBox="0 0 24 24" fill="none">
+                  <rect x="3" y="8" width="18" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M12 8v13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <path d="M3 14h18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <path d="M12 3c1.5 1 3 3 0 5-3-2-1.5-4-0-5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div>
+                <h4 class="font-bold text-lg text-gray-900">WishCraft</h4>
+                <p class="text-sm text-gray-600">Create beautiful celebration pages in seconds.</p>
+              </div>
+            </div>
+            <div class="mt-4 flex items-center justify-between">
+              <div class="text-sm text-sky-600 font-bold flex items-center gap-1">
+                Launch Tool
+                <svg class="w-4 h-4 transform transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 24 24" fill="none">
+                  <path d="M5 12h14m-7-7l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="text-xs text-gray-400">The Best ✨</div>
+            </div>
+          </div>
+        </a>
 
          <!-- StudyMate -->
-<a href="https://yash-verma2.github.io/studymate-site/" 
-   class="tool-card glass p-5 rounded-2xl border border-gray-200 group hover:shadow-lg transition-all" 
-   data-search="StudyMate MCQ Generator Notes Summaries Chatbot" 
-   data-category="education" 
-   aria-label="StudyMate Tool">
+        <a href="https://yash-verma2.github.io/studymate-site/" 
+           class="tool-card glass p-5 rounded-2xl border border-gray-200 group hover:shadow-lg transition-all" 
+           data-search="StudyMate MCQ Generator Notes Summaries AI Chatbot education study tool" 
+           data-category="education" aria-label="StudyMate - AI Education Tool">
+          <div class="flex flex-col h-full justify-between">
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 rounded-xl bg-white/80 flex items-center justify-center shadow-sm">
+                <svg class="w-7 h-7 text-sky-600" viewBox="0 0 24 24" fill="none">
+                  <rect x="4" y="3" width="16" height="18" rx="2" ry="2" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M12 3v6l4-2v12H8V7l4-2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div>
+                <h4 class="font-bold text-lg text-gray-900">StudyMate</h4>
+                <p class="text-sm text-gray-600">Generate MCQs, summaries, notes & chat with AI.</p>
+              </div>
+            </div>
+            <div class="mt-4 flex items-center justify-between">
+              <div class="text-sm text-sky-600 font-bold flex items-center gap-1">
+                Launch Tool
+                <svg class="w-4 h-4 transform transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 24 24" fill="none">
+                  <path d="M5 12h14m-7-7l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="text-xs text-gray-400">AI Powered</div>
+            </div>
+          </div>
+        </a>
 
-  <div class="flex flex-col h-full justify-between">
-
-    <!-- Top Section -->
-    <div class="flex items-start gap-4">
-      <div class="w-12 h-12 rounded-xl bg-white/80 flex items-center justify-center shadow-sm">
-        <svg class="w-7 h-7 text-sky-600" viewBox="0 0 24 24" fill="none">
-  <!-- Book Cover -->
-  <rect x="4" y="3" width="16" height="18" rx="2" ry="2" stroke="currentColor" stroke-width="1.5"/>
-  <!-- Bookmark -->
-  <path d="M12 3v6l4-2v12H8V7l4-2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-
-      </div>
-
-      <div>
-        <h4 class="font-bold text-lg text-gray-900">StudyMate</h4>
-        <p class="text-sm text-gray-600">
-          Generate MCQs, summaries, notes & chat with AI.
-        </p>
-      </div>
-    </div>
-
-    <!-- Footer -->
-    <div class="mt-4 flex items-center justify-between">
-      <div class="text-sm text-sky-600 font-bold flex items-center gap-1">
-        Launch Tool
-        <svg 
-          class="w-4 h-4 transform transition-transform duration-300 group-hover:translate-x-1" 
-          viewBox="0 0 24 24" 
-          fill="none"
-        >
-          <path 
-            d="M5 12h14m-7-7l7 7-7 7" 
-            stroke="currentColor" 
-            stroke-width="2" 
-            stroke-linecap="round" 
-            stroke-linejoin="round"
-          />
-        </svg>
-      </div>
-
-      <div class="text-xs text-gray-400">AI Powered</div>
-    </div>
-
-  </div>
-</a>
-
-        <!-- Tool card example 2 -->
-        <a href="tools/meme.html" class="tool-card glass p-5 rounded-2xl border border-gray-200 group" data-search="Meme Maker Create social-ready memes image upload text stickers download PNG" data-category="fun" aria-label="Meme Maker">
+        <!-- Meme Maker -->
+        <a href="tools/meme.html" class="tool-card glass p-5 rounded-2xl border border-gray-200 group" 
+           data-search="Meme Maker Create social-ready memes image editor text stickers download PNG fun tool" 
+           data-category="fun" aria-label="Meme Maker - Social Image Creator">
           <div class="flex flex-col h-full justify-between">
             <div class="flex items-start gap-4">
               <div class="w-12 h-12 rounded-lg bg-white/80 flex items-center justify-center shadow-sm">
@@ -349,8 +365,10 @@
           </div>
         </a>
 
-        <!-- Tool card example 3 -->
-        <a href="tools/pdf.html" class="tool-card glass p-5 rounded-2xl border border-gray-200 group" data-search="PDF Utilities Merge PDFs compress images convert images to PDF" data-category="pdf" aria-label="PDF Utilities">
+        <!-- PDF Utilities -->
+        <a href="tools/pdf.html" class="tool-card glass p-5 rounded-2xl border border-gray-200 group" 
+           data-search="PDF Utilities Merge PDFs compress images convert images to PDF offline pdf tool" 
+           data-category="pdf" aria-label="PDF Utilities - Merge, Convert, and Compress PDFs">
           <div class="flex flex-col h-full justify-between">
             <div class="flex items-start gap-4">
               <div class="w-12 h-12 rounded-lg bg-white/80 flex items-center justify-center shadow-sm">
@@ -368,9 +386,6 @@
           </div>
         </a>
 
-
-
-
         <!-- Placeholder & CTA -->
         <div class="tool-card p-6 rounded-2xl border border-dashed border-gray-300 flex flex-col justify-center items-center text-center">
           <h4 class="font-bold text-lg text-gray-700">More Tools On The Way...</h4>
@@ -378,15 +393,16 @@
         </div>
 
         <div class="tool-card p-6 rounded-2xl flex items-center justify-center border border-dashed border-sky-200">
-  <a href="https://ig.me/m/yash_verma_690" 
-     target="_blank"
-     class="px-4 py-2 bg-sky-600 text-white rounded-xl">
-    Request a Feature
-  </a>
-</div>
-
+          <a href="https://ig.me/m/yash_verma_690" target="_blank" class="px-4 py-2 bg-sky-600 text-white rounded-xl">Request a Feature</a>
+        </div>
       </div>
     </section>
+
+    <!-- DEBUG STATUS SECTION -->
+    <div class="max-w-6xl mx-auto px-4 mb-10">
+        <h3 class="font-bold text-red-600">System Status (Debug Mode)</h3>
+        <div id="debug-status">Initializing...</div>
+    </div>
 
     <!-- Contact CTA -->
     <section id="contact" class="py-12 bg-gray-900 rounded-2xl mb-10 text-white scroll-fade-in">
@@ -413,45 +429,23 @@
               <div class="text-xs text-gray-500">Immersive Utility Hub</div>
             </div>
           </div>
-
           <div class="flex items-center gap-6">
             <div class="hidden md:flex gap-4">
               <a class="hover:underline" href="#trust">Why Trust Us</a>
               <a class="hover:underline" href="#tools">Tools</a>
               <a class="hover:underline" href="about.html">About</a>
             </div>
-
-           <div class="flex items-center gap-3">
-  <!-- Instagram -->
-  <a href="#" class="p-2 rounded-xl border border-gray-300 dark:border-gray-700 backdrop-blur bg-white/30 dark:bg-white/10 hover:bg-white/50 dark:hover:bg-white/20 transition"
-     aria-label="Instagram">
-    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-      <rect x="3" y="3" width="18" height="18" rx="5" />
-      <circle cx="12" cy="12" r="4" />
-      <circle cx="17" cy="7" r="1.2" fill="currentColor" />
-    </svg>
-  </a>
-
-  <!-- Twitter (X) -->
-  <a href="#" class="p-2 rounded-xl border border-gray-300 dark:border-gray-700 backdrop-blur bg-white/30 dark:bg-white/10 hover:bg-white/50 dark:hover:bg-white/20 transition"
-     aria-label="Twitter">
-    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-      <path d="M18 2L11 13l4 9 7-11-4-11zM6 2L0 13l4 9 7-11L6 2z" />
-    </svg>
-  </a>
-
-  <!-- GitHub -->
-  <a href="#" class="p-2 rounded-xl border border-gray-300 dark:border-gray-700 backdrop-blur bg-white/30 dark:bg-white/10 hover:bg-white/50 dark:hover:bg-white/20 transition"
-     aria-label="GitHub">
-    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-      <path fill-rule="evenodd" d="M12 2C6.48 2 2 6.72 2 12.45c0 4.52 2.87 8.35 6.84 9.71.5.1.68-.23.68-.5v-1.9c-2.78.63-3.37-1.37-3.37-1.37-.46-1.2-1.11-1.52-1.11-1.52-.9-.64.07-.63.07-.63 1 .07 1.53 1.07 1.53 1.07.9 1.6 2.36 1.14 2.94.87.09-.68.36-1.14.65-1.4-2.22-.26-4.56-1.16-4.56-5.16 0-1.14.38-2.07 1.03-2.8-.1-.26-.45-1.3.1-2.7 0 0 .84-.28 2.75 1.07A9.3 9.3 0 0 1 12 6.6c.85 0 1.7.12 2.5.35 1.9-1.35 2.74-1.07 2.74-1.07.55 1.4.2 2.44.1 2.7.65.73 1.03 1.66 1.03 2.8 0 4.01-2.35 4.89-4.6 5.15.37.34.7 1.02.7 2.06v3.05c0 .28.18.6.7.5A10.47 10.47 0 0 0 22 12.45C22 6.72 17.52 2 12 2Z"/>
-    </svg>
-  </a>
-</div>
-
+            <div class="flex items-center gap-3">
+              <a href="#" class="p-2 rounded-xl border border-gray-300 dark:border-gray-700 backdrop-blur bg-white/30 dark:bg-white/10 hover:bg-white/50 dark:hover:bg-white/20 transition" aria-label="Instagram">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <rect x="3" y="3" width="18" height="18" rx="5" />
+                  <circle cx="12" cy="12" r="4" />
+                  <circle cx="17" cy="7" r="1.2" fill="currentColor" />
+                </svg>
+              </a>
+            </div>
           </div>
         </div>
-
         <div class="mt-6 pt-6 border-t border-gray-200 text-center text-xs text-gray-500">
           &copy; <span id="currentYear"></span> ToolNest — Designed by Yash Verma. All Rights Reserved.
         </div>
@@ -525,9 +519,9 @@
     });
 
     // ====== Desktop modal open/close & populate categories ======
-    const allCats = ['all','qr','image','pdf','background','fun','WishCraft'];
+    const allCats = ['all','qr','image','pdf','background','fun','WishCraft', 'education']; // Added 'education'
     function populateCategoryModal(){
-      allCategoriesList.innerHTML = allCats.map(c => `<div class="p-3 rounded-xl bg-white/50 dark:bg-white/5 text-center cursor-pointer">${c.toUpperCase()}</div>`).join('');
+      allCategoriesList.innerHTML = allCats.map(c => `<div class="p-3 rounded-xl bg-white/50 dark:bg-white/5 text-center cursor-pointer">${c.toUpperCase().replace('WISHCRAFT', 'GENERATORS').replace('EDUCATION', 'AI/EDUCATION')}</div>`).join('');
       // add click handlers
       Array.from(allCategoriesList.children).forEach((el, idx) => {
         el.addEventListener('click', () => {
@@ -625,43 +619,82 @@
   </script>
 
   <script>
-    // set year (in footer) — place this after body elements
-    (function(){ const el = document.getElementById('currentYear'); if (el) el.textContent = new Date().getFullYear(); })();
+    // --- DEBUGGING & PWA INSTALLATION LOGIC ---
+    const debugBox = document.getElementById('debug-status');
+    function log(msg) {
+      console.log(msg);
+      debugBox.textContent += msg + '\n';
+    }
 
+    log('Starting System Check...');
 
-   let deferredPrompt;
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  // Show your custom "Install" button
-  const btn = document.getElementById('installBtn');
-  btn.style.display = 'block';
-  btn.addEventListener('click', () => {
-    deferredPrompt.prompt();
-    deferredPrompt.userChoice.then(choice => {
-      console.log(choice.outcome);
-      deferredPrompt = null;
-      btn.style.display = 'none';
+    // 1. Check Secure Context (Required for PWA)
+    if (!window.isSecureContext) {
+      log('ERROR: Site is NOT in a secure context (HTTPS or localhost). PWA will not work.');
+    } else {
+      log('OK: Secure context detected.');
+    }
+
+    let deferredPrompt;
+
+    // 2. Register Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        // Ensure the path is correct
+        navigator.serviceWorker.register('./sw.js') 
+          .then(reg => {
+             log('OK: Service Worker Registered. Scope: ' + reg.scope);
+             // Force update if available
+             if (reg.waiting) {
+               log('INFO: New SW waiting. Updating...');
+               reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+             }
+          })
+          .catch(err => {
+            log('ERROR: Service Worker Failed to Register. ' + err);
+          });
+      });
+    } else {
+      log('ERROR: Browser does not support Service Workers.');
+    }
+
+    // 3. Handle Install Prompt
+    window.addEventListener('beforeinstallprompt', (e) => {
+      log('SUCCESS: beforeinstallprompt fired! App is installable.');
+      e.preventDefault();
+      deferredPrompt = e;
+
+      // Show the buttons
+      const btnDesktop = document.getElementById('installBtn');
+      const btnMobile = document.getElementById('installBtnMobile');
+      
+      if(btnDesktop) {
+        btnDesktop.style.display = 'block';
+        btnDesktop.addEventListener('click', installApp);
+      }
+      if(btnMobile) {
+        btnMobile.classList.remove('hidden');
+        btnMobile.addEventListener('click', installApp);
+      }
     });
-  });
-});
 
+    window.addEventListener('appinstalled', () => {
+      log('SUCCESS: App was installed successfully.');
+      // Optionally hide the button after install
+      document.getElementById('installBtn').style.display = 'none';
+      document.getElementById('installBtnMobile').classList.add('hidden');
+    });
 
-
-
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
-      .then(reg => console.log('SW registered', reg))
-      .catch(err => console.log('SW failed', err));
-  });
-}
-
-
+    function installApp() {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(choice => {
+        log('User choice: ' + choice.outcome);
+        // Prompt is only valid once
+        deferredPrompt = null;
+        // The 'appinstalled' event handles hiding the buttons if successful
+      });
+    }
   </script>
-
- 
-
-
 </body>
 </html>
