@@ -24,27 +24,233 @@
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image" />
   <meta property="twitter:url" content="https://toolnest.app/about.html" />
-  class="fixed inset-y-0 right-0 z-50 w-72 bg-white/90 dark:bg-slate-900/95 backdrop-blur-xl transform translate-x-full
-  transition-transform duration-300 md:hidden shadow-2xl border-l border-gray-200 dark:border-gray-800 p-6"
-  aria-hidden="true">
-  <div class="flex justify-between items-center mb-8">
-    <div class="font-bold text-xl tracking-tight">Menu</div>
-    <button id="closeMenuBtn" class="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-800 transition"
-      aria-label="Close menu">
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-      </svg>
-    </button>
-  </div>
-  <nav class="flex flex-col gap-6 text-lg font-medium">
-    <a href="index.html"
-      class="mobile-nav-link text-gray-700 dark:text-gray-300 hover:text-sky-600 dark:hover:text-sky-400 transition">Home</a>
-    <a href="index.html#tools"
-      class="mobile-nav-link text-gray-700 dark:text-gray-300 hover:text-sky-600 dark:hover:text-sky-400 transition">Tools</a>
-    <a href="about.html" class="mobile-nav-link text-sky-600 dark:text-sky-400 font-bold transition">About</a>
-    <a href="#contact"
-      class="mobile-nav-link text-gray-700 dark:text-gray-300 hover:text-sky-600 dark:hover:text-sky-400 transition">Contact</a>
-  </nav>
+  <meta property="twitter:title" content="About ToolNest — Our Mission & Vision" />
+  <meta property="twitter:description"
+    content="Learn about ToolNest's mission to provide fast, private, and beautifully designed utility tools for everyone." />
+  <meta property="twitter:image" content="https://toolnest.app/og-image.jpg" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+    }
+  </script>
+  <link rel="manifest" href="./manifest.json">
+
+  <!-- iOS Support -->
+  <link rel="icon" type="image/png" sizes="16x16" href="./icons/icon-16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./icons/icon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icons/icon-512.png">
+  <link rel="shortcut icon" href="./icons/icon-32.png">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
+  <meta name="apple-mobile-web-app-status-bar" content="#0ea5e9">
+
+  <style>
+    :root {
+      /* Premium Palette */
+      --primary: #0284c7;
+      --primary-dark: #0369a1;
+      --secondary: #4f46e5;
+      --accent: #d97706;
+
+      --bg-light: #f1f5f9;
+      --bg-dark: #0f172a;
+
+      --text-main: #0f172a;
+      --text-muted: #475569;
+
+      --glass-light: rgba(255, 255, 255, 0.95);
+      --glass-dark: rgba(15, 23, 42, 0.7);
+
+      --border-light: rgba(203, 213, 225, 1);
+      --border-dark: rgba(255, 255, 255, 0.08);
+
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    }
+
+    html.dark {
+      --bg-light: #020617;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #0ea5e9;
+      --primary-dark: #0284c7;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+      transition: background-color 0.4s ease, color 0.4s ease;
+    }
+
+    /* Premium Glass Effect */
+    .glass {
+      background: var(--glass-light);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-sm);
+    }
+
+    html.dark .glass {
+      background: var(--glass-dark);
+      border: 1px solid var(--border-dark);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .scroll-fade-in {
+      opacity: 0;
+      animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+      animation-play-state: paused;
+    }
+
+    .scroll-fade-in.is-visible {
+      animation-play-state: running;
+    }
+
+    /* Gradient Text */
+    .text-gradient {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Button Styles */
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      box-shadow: 0 4px 14px rgba(14, 165, 233, 0.35);
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 6px 20px rgba(14, 165, 233, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 10px rgba(14, 165, 233, 0.3);
+    }
+
+    /* Scroll to Top */
+    #scrollToTopBtn {
+      bottom: 30px;
+      right: 30px;
+      opacity: 0;
+      transform: translateY(20px);
+      pointer-events: none;
+      transition: all 0.4s ease;
+    }
+
+    #scrollToTopBtn.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    /* Focus */
+    :focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+
+    /* Background Mesh/Blob */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -20%;
+      left: -10%;
+      width: 70%;
+      height: 70%;
+      background: radial-gradient(circle, rgba(14, 165, 233, 0.12) 0%, rgba(255, 255, 255, 0) 70%);
+      z-index: -1;
+      pointer-events: none;
+      filter: blur(80px);
+      animation: floatBlob 20s infinite alternate ease-in-out;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -20%;
+      right: -10%;
+      width: 70%;
+      height: 70%;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.12) 0%, rgba(255, 255, 255, 0) 70%);
+      z-index: -1;
+      pointer-events: none;
+      filter: blur(80px);
+      animation: floatBlob 25s infinite alternate-reverse ease-in-out;
+    }
+
+    @keyframes floatBlob {
+      0% {
+        transform: translate(0, 0);
+      }
+
+      100% {
+        transform: translate(30px, 30px);
+      }
+    }
+
+    html.dark body::before {
+      background: radial-gradient(circle, rgba(14, 165, 233, 0.08) 0%, rgba(0, 0, 0, 0) 70%);
+    }
+
+    html.dark body::after {
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, rgba(0, 0, 0, 0) 70%);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Off-canvas mobile menu -->
+  <div id="mobileMenu"
+    class="fixed inset-y-0 right-0 z-50 w-72 bg-white/90 dark:bg-slate-900/95 backdrop-blur-xl transform translate-x-full transition-transform duration-300 md:hidden shadow-2xl border-l border-gray-200 dark:border-gray-800 p-6"
+    aria-hidden="true">
+    <div class="flex justify-between items-center mb-8">
+      <div class="font-bold text-xl tracking-tight">Menu</div>
+      <button id="closeMenuBtn"
+        class="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-800 transition"
+        aria-label="Close menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    <nav class="flex flex-col gap-6 text-lg font-medium">
+      <a href="index.html"
+        class="mobile-nav-link text-gray-700 dark:text-gray-300 hover:text-sky-600 dark:hover:text-sky-400 transition">Home</a>
+      <a href="index.html#tools"
+        class="mobile-nav-link text-gray-700 dark:text-gray-300 hover:text-sky-600 dark:hover:text-sky-400 transition">Tools</a>
+      <a href="about.html" class="mobile-nav-link text-sky-600 dark:text-sky-400 font-bold transition">About</a>
+      <a href="#contact"
+        class="mobile-nav-link text-gray-700 dark:text-gray-300 hover:text-sky-600 dark:hover:text-sky-400 transition">Contact</a>
+    </nav>
   </div>
 
   <!-- Header -->
@@ -374,6 +580,6 @@
       if (yearEl) yearEl.textContent = new Date().getFullYear();
     });
   </script>
-  </body>
+</body>
 
 </html>
