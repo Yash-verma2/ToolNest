@@ -1,0 +1,966 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Meme Generator — ToolNest</title>
+    <meta name="description"
+        content="Create hilarious memes in seconds with ToolNest's free Meme Generator. Upload images, add text, and download." />
+    <meta name="keywords" content="meme generator, make memes, online meme maker, free tools" />
+    <meta name="author" content="Yash Verma" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#0ea5e9">
+    <link rel="canonical" href="https://toolnest.app/tools/meme.html" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://toolnest.app/tools/meme.html" />
+    <meta property="og:title" content="Meme Generator — ToolNest" />
+    <meta property="og:description" content="Create hilarious memes in seconds with ToolNest's free Meme Generator." />
+    <meta property="og:image" content="https://toolnest.app/og-image.jpg" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://toolnest.app/tools/meme.html" />
+    <meta property="twitter:title" content="Meme Generator — ToolNest" />
+    <meta property="twitter:description"
+        content="Create hilarious memes in seconds with ToolNest's free Meme Generator." />
+    <meta property="twitter:image" content="https://toolnest.app/og-image.jpg" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    <link rel="manifest" href="../manifest.json">
+
+    <!-- iOS Support -->
+    <link rel="icon" href="../favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="16x16" href="../icons/icon-16.png?v=2">
+    <link rel="icon" type="image/png" sizes="32x32" href="../icons/icon-32.png?v=2">
+    <link rel="icon" type="image/png" sizes="192x192" href="../icons/icon-192.png?v=2">
+    <link rel="icon" type="image/png" sizes="512x512" href="../icons/icon-512.png?v=2">
+    <link rel="shortcut icon" href="../icons/icon-32.png?v=2">
+    <link rel="apple-touch-icon" href="../icons/icon-192.png?v=2">
+    <meta name="apple-mobile-web-app-status-bar" content="#0ea5e9">
+
+    <!-- Load necessary fonts for Meme Generator -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Impact&family=Inter:wght@400;500;700&family=Arial+Black&family=Comic+Sans+MS&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            /* Premium Palette */
+            --primary: #0284c7;
+            --primary-dark: #0369a1;
+            --secondary: #4f46e5;
+            --accent: #d97706;
+
+            --bg-light: #f1f5f9;
+            --bg-dark: #0f172a;
+
+            --text-main: #0f172a;
+            --text-muted: #475569;
+
+            --glass-light: rgba(255, 255, 255, 0.95);
+            --glass-dark: rgba(15, 23, 42, 0.7);
+
+            --border-light: rgba(203, 213, 225, 1);
+            --border-dark: rgba(255, 255, 255, 0.08);
+
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        html.dark {
+            --bg-light: #020617;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #0ea5e9;
+            --primary-dark: #0284c7;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        /* Premium Glass Effect */
+        .glass {
+            background: var(--glass-light);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-sm);
+        }
+
+        html.dark .glass {
+            background: var(--glass-dark);
+            border: 1px solid var(--border-dark);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .scroll-fade-in {
+            opacity: 0;
+            animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            animation-play-state: paused;
+        }
+
+        .scroll-fade-in.is-visible {
+            animation-play-state: running;
+        }
+
+        /* Gradient Text */
+        .text-gradient {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Button Styles */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            box-shadow: 0 4px 14px rgba(14, 165, 233, 0.35);
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 6px 20px rgba(14, 165, 233, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 10px rgba(14, 165, 233, 0.3);
+        }
+
+        /* Scroll to Top */
+        #scrollToTopBtn {
+            bottom: 30px;
+            right: 30px;
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+            transition: all 0.4s ease;
+        }
+
+        #scrollToTopBtn.visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        /* Focus */
+        :focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        /* Background Mesh/Blob */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -20%;
+            left: -10%;
+            width: 70%;
+            height: 70%;
+            background: radial-gradient(circle, rgba(14, 165, 233, 0.12) 0%, rgba(255, 255, 255, 0) 70%);
+            z-index: -1;
+            pointer-events: none;
+            filter: blur(80px);
+            animation: floatBlob 20s infinite alternate ease-in-out;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -20%;
+            right: -10%;
+            width: 70%;
+            height: 70%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.12) 0%, rgba(255, 255, 255, 0) 70%);
+            z-index: -1;
+            pointer-events: none;
+            filter: blur(80px);
+            animation: floatBlob 25s infinite alternate-reverse ease-in-out;
+        }
+
+        @keyframes floatBlob {
+            0% {
+                transform: translate(0, 0);
+            }
+
+            100% {
+                transform: translate(30px, 30px);
+            }
+        }
+
+        html.dark body::before {
+            background: radial-gradient(circle, rgba(14, 165, 233, 0.08) 0%, rgba(0, 0, 0, 0) 70%);
+        }
+
+        html.dark body::after {
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, rgba(0, 0, 0, 0) 70%);
+        }
+
+        /* Custom scrollbar for template list */
+        .template-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .template-list::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .template-list::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+
+        .template-list::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        html.dark .template-list::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        html.dark .template-list::-webkit-scrollbar-thumb {
+            background: #475569;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Off-canvas mobile menu -->
+    <div id="mobileMenu"
+        class="fixed inset-y-0 right-0 z-50 w-72 bg-white/90 dark:bg-slate-900/95 backdrop-blur-xl transform translate-x-full transition-transform duration-300 md:hidden shadow-2xl border-l border-gray-200 dark:border-gray-800 p-6"
+        aria-hidden="true">
+        <div class="flex justify-between items-center mb-8">
+            <div class="font-bold text-xl tracking-tight">Menu</div>
+            <button id="closeMenuBtn"
+                class="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-800 transition"
+                aria-label="Close menu">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <nav class="flex flex-col gap-6 text-lg font-medium">
+            <a href="../index.html"
+                class="mobile-nav-link text-gray-700 dark:text-gray-300 hover:text-sky-600 dark:hover:text-sky-400 transition">Home</a>
+            <a href="../index.html#tools"
+                class="mobile-nav-link text-gray-700 dark:text-gray-300 hover:text-sky-600 dark:hover:text-sky-400 transition">Tools</a>
+            <a href="../about.html"
+                class="mobile-nav-link text-gray-700 dark:text-gray-300 hover:text-sky-600 dark:hover:text-sky-400 transition">About</a>
+        </nav>
+    </div>
+
+    <!-- Header -->
+    <header class="sticky top-0 z-40 glass border-b border-white/20 dark:border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <a href="../index.html" class="flex items-center gap-3">
+                <div
+                    class="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-500 to-indigo-500 flex items-center justify-center text-white shadow-lg shadow-sky-500/20">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight">ToolNest</h1>
+                </div>
+            </a>
+
+            <nav class="hidden md:flex gap-8 items-center text-sm font-medium">
+                <a href="../index.html"
+                    class="text-gray-600 dark:text-gray-300 hover:text-sky-600 dark:hover:text-sky-400 transition">Home</a>
+                <a href="../index.html#tools"
+                    class="text-gray-600 dark:text-gray-300 hover:text-sky-600 dark:hover:text-sky-400 transition">Tools</a>
+                <a href="../about.html"
+                    class="text-gray-600 dark:text-gray-300 hover:text-sky-600 dark:hover:text-sky-400 transition">About</a>
+
+                <button id="themeToggle"
+                    class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800 transition text-gray-600 dark:text-gray-400"
+                    aria-pressed="false" title="Toggle theme">
+                    <svg id="themeIcon" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+            </nav>
+
+            <div class="md:hidden flex items-center gap-3">
+                <button id="themeToggleMobile" class="p-2 rounded-lg glass text-gray-600 dark:text-gray-300">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+                <button id="menuBtn" class="p-2 rounded-lg glass text-gray-600 dark:text-gray-300"
+                    aria-label="Open menu">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+        <!-- Tool Header -->
+        <div class="text-center mb-10 scroll-fade-in">
+            <h1 class="text-4xl font-extrabold tracking-tight mb-4">
+                Meme <span class="text-gradient">Generator</span>
+            </h1>
+            <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                Create your own meme and download it instantly.
+            </p>
+        </div>
+
+        <!-- Main Content: Layout splits into controls and preview -->
+        <div class="flex flex-col lg:flex-row gap-8">
+
+            <!-- Left Column: Controls -->
+            <div class="w-full lg:w-1/3 lg:max-w-md flex-shrink-0 scroll-fade-in">
+                <!-- Glass Card Backgrounds -->
+                <div class="glass p-6 rounded-3xl space-y-6 lg:sticky lg:top-24">
+
+                    <!-- 1. Template Picker -->
+                    <div>
+                        <h2 class="text-lg font-bold mb-3 text-gray-900 dark:text-white">1. Pick a Template</h2>
+                        <div id="template-container"
+                            class="template-list grid grid-cols-3 gap-2 max-h-48 overflow-y-auto rounded-xl p-2 bg-gray-50 dark:bg-slate-800/50 border border-gray-100 dark:border-gray-700">
+                            <!-- Templates will be injected here by JS -->
+                        </div>
+                    </div>
+
+                    <!-- 2. Or Use Your Own -->
+                    <div>
+                        <h2 class="text-lg font-bold mb-3 text-gray-900 dark:text-white">2. Or Use Your Own</h2>
+                        <div class="space-y-4">
+                            <!-- File Upload -->
+                            <div>
+                                <label for="file-upload"
+                                    class="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">Upload an
+                                    image</label>
+                                <input id="file-upload" type="file" accept="image/*" class="block w-full text-sm text-gray-500 dark:text-gray-400
+                  file:mr-4 file:py-2 file:px-4
+                  file:rounded-full file:border-0
+                  file:text-sm file:font-semibold
+                  file:bg-violet-100 file:text-violet-700 hover:file:bg-violet-200
+                  dark:file:bg-violet-900/30 dark:file:text-violet-300
+                  cursor-pointer" />
+                            </div>
+
+                            <!-- URL Input -->
+                            <div>
+                                <label for="url-upload"
+                                    class="block text-sm font-medium text-gray-600 dark:text-gray-300">Load from
+                                    URL</label>
+                                <input type="text" id="url-upload" placeholder="https://..."
+                                    class="mt-1 block w-full bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-sky-500 outline-none transition">
+                            </div>
+
+                            <!-- Reset Button -->
+                            <div>
+                                <button id="revert-btn"
+                                    class="w-full py-2.5 rounded-xl text-sm font-semibold text-violet-700 bg-violet-100 hover:bg-violet-200 dark:bg-violet-900/30 dark:text-violet-300 dark:hover:bg-violet-900/50 transition">
+                                    Reset Image
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. Add Text -->
+                    <div>
+                        <h2 class="text-lg font-bold mb-3 text-gray-900 dark:text-white">3. Add Text (Drag to move)</h2>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="top-text"
+                                    class="block text-sm font-medium text-gray-600 dark:text-gray-300">Top Text</label>
+                                <textarea id="top-text" rows="2"
+                                    class="mt-1 block w-full bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-sky-500 outline-none transition"
+                                    placeholder="Text at the top"></textarea>
+                            </div>
+                            <div>
+                                <label for="bottom-text"
+                                    class="block text-sm font-medium text-gray-600 dark:text-gray-300">Bottom
+                                    Text</label>
+                                <textarea id="bottom-text" rows="2"
+                                    class="mt-1 block w-full bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-sky-500 outline-none transition"
+                                    placeholder="Text at the bottom"></textarea>
+                            </div>
+                            <!-- Reset Text Button -->
+                            <div>
+                                <button id="reset-btn"
+                                    class="w-full py-2.5 rounded-xl text-sm font-semibold text-rose-700 bg-rose-100 hover:bg-rose-200 dark:bg-rose-900/30 dark:text-rose-300 dark:hover:bg-rose-900/50 transition">
+                                    Clear All Text
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4. Customize -->
+                    <div>
+                        <h2 class="text-lg font-bold mb-3 text-gray-900 dark:text-white">4. Customize</h2>
+                        <div class="space-y-4">
+                            <!-- Font Size -->
+                            <div>
+                                <label for="font-size"
+                                    class="block text-sm font-medium text-gray-600 dark:text-gray-300">Font Size: <span
+                                        id="font-size-label">10</span>%</label>
+                                <input id="font-size" type="range" min="1" max="20" value="10"
+                                    class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-sky-500">
+                            </div>
+                            <!-- Outline Width Slider -->
+                            <div>
+                                <label for="outline-width"
+                                    class="block text-sm font-medium text-gray-600 dark:text-gray-300">Outline Width:
+                                    <span id="outline-width-label">5</span>%</label>
+                                <input id="outline-width" type="range" min="0" max="15" value="5"
+                                    class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-sky-500">
+                            </div>
+                            <!-- Colors -->
+                            <div class="flex gap-4">
+                                <div class="flex-1">
+                                    <label for="text-color"
+                                        class="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">Text
+                                        Color</label>
+                                    <input id="text-color" type="color" value="#FFFFFF"
+                                        class="w-full h-10 p-1 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer">
+                                </div>
+                                <div class="flex-1">
+                                    <label for="stroke-color"
+                                        class="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">Outline</label>
+                                    <input id="stroke-color" type="color" value="#000000"
+                                        class="w-full h-10 p-1 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer">
+                                </div>
+                            </div>
+                            <!-- Font Family & Align -->
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label for="font-family"
+                                        class="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">Font</label>
+                                    <select id="font-family"
+                                        class="block w-full bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl p-2 text-sm focus:ring-2 focus:ring-sky-500 outline-none">
+                                        <option value="Impact">Impact</option>
+                                        <option value="Arial Black">Arial Black</option>
+                                        <option value="Comic Sans MS">Comic Sans</option>
+                                        <option value="Inter">Inter</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="text-align"
+                                        class="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">Align</label>
+                                    <select id="text-align"
+                                        class="block w-full bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl p-2 text-sm focus:ring-2 focus:ring-sky-500 outline-none">
+                                        <option value="center">Center</option>
+                                        <option value="left">Left</option>
+                                        <option value="right">Right</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 5. Download -->
+                    <div>
+                        <h2 class="text-lg font-bold mb-3 text-gray-900 dark:text-white">5. Download</h2>
+                        <a id="download-btn" href="#" download="meme.png"
+                            class="btn-primary w-full flex items-center justify-center px-6 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition">
+                            Download Meme
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Canvas Preview -->
+            <div class="w-full lg:w-2/3 scroll-fade-in">
+                <!-- Glass Card Backgrounds -->
+                <div class="glass p-4 rounded-3xl shadow-xl">
+                    <div id="canvas-container"
+                        class="w-full h-auto bg-gray-100 dark:bg-slate-900 rounded-2xl overflow-hidden flex items-center justify-center min-h-[400px]">
+                        <canvas id="meme-canvas" class="max-w-full h-auto"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-gray-200 dark:border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="text-center text-sm text-gray-500 dark:text-gray-400">
+                <p>&copy; <span id="currentYear"></span> ToolNest — Designed & Built by <a href="#"
+                        class="text-sky-600 dark:text-sky-400 hover:underline">Yash Verma</a>.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll To Top -->
+    <button id="scrollToTopBtn"
+        class="fixed z-40 p-3 bg-sky-600 text-white rounded-full shadow-xl hover:bg-sky-700 focus:outline-none"
+        aria-label="Scroll to top">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none">
+            <path d="M5 10l7-7m0 0l7 7m-7-7v18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+        </svg>
+    </button>
+
+    <script>
+        // ====== Initialization & element refs ======
+        const mobileMenu = document.getElementById('mobileMenu');
+        const menuBtn = document.getElementById('menuBtn');
+        const closeMenuBtn = document.getElementById('closeMenuBtn');
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+        const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+        const themeToggle = document.getElementById('themeToggle');
+        const themeToggleMobile = document.getElementById('themeToggleMobile');
+        const htmlEl = document.documentElement;
+        const THEME_KEY = 'toolnest-theme';
+
+        // ====== Theme: default LIGHT, toggle persists ======
+        function applyTheme(theme) {
+            if (theme === 'dark') {
+                htmlEl.classList.add('dark');
+                themeToggle?.setAttribute('aria-pressed', 'true');
+            } else {
+                htmlEl.classList.remove('dark');
+                themeToggle?.setAttribute('aria-pressed', 'false');
+            }
+            localStorage.setItem(THEME_KEY, theme);
+        }
+        (function initTheme() {
+            const saved = localStorage.getItem(THEME_KEY);
+            if (saved) applyTheme(saved);
+            else applyTheme('light'); // default light
+        })();
+
+        function toggleTheme() {
+            applyTheme(htmlEl.classList.contains('dark') ? 'light' : 'dark');
+        }
+
+        themeToggle?.addEventListener('click', toggleTheme);
+        themeToggleMobile?.addEventListener('click', toggleTheme);
+
+        // ====== Mobile menu toggle ======
+        function toggleMenu() {
+            mobileMenu.classList.toggle('translate-x-full');
+            const open = !mobileMenu.classList.contains('translate-x-full');
+            mobileMenu.setAttribute('aria-hidden', String(!open));
+            document.body.style.overflow = open ? 'hidden' : '';
+        }
+        menuBtn?.addEventListener('click', toggleMenu);
+        closeMenuBtn?.addEventListener('click', toggleMenu);
+        mobileNavLinks.forEach(l => l.addEventListener('click', () => { if (!mobileMenu.classList.contains('translate-x-full')) toggleMenu(); }));
+
+        // ====== Scroll features (fade-in & top button) ======
+        function initScrollFeatures() {
+            const observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) { entry.target.classList.add('is-visible'); obs.unobserve(entry.target); }
+                });
+            }, { threshold: 0.08 });
+            document.querySelectorAll('.scroll-fade-in').forEach(s => observer.observe(s));
+
+            window.addEventListener('scroll', () => {
+                if (!scrollToTopBtn) return;
+                if (window.scrollY > 300) scrollToTopBtn.classList.add('visible');
+                else scrollToTopBtn.classList.remove('visible');
+            });
+            scrollToTopBtn?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+        }
+
+        // ====== Init on load ======
+        window.addEventListener('load', () => {
+            initScrollFeatures();
+            const yearEl = document.getElementById('currentYear');
+            if (yearEl) yearEl.textContent = new Date().getFullYear();
+        });
+    </script>
+
+    <script>
+        // --- MEME GENERATOR LOGIC ---
+        window.addEventListener('DOMContentLoaded', () => {
+            // --- DOM Elements ---
+            const canvas = document.getElementById('meme-canvas');
+            const ctx = canvas.getContext('2d');
+            const canvasContainer = document.getElementById('canvas-container');
+            const templateContainer = document.getElementById('template-container');
+            const fileUpload = document.getElementById('file-upload');
+            const urlUpload = document.getElementById('url-upload');
+            const topTextEl = document.getElementById('top-text');
+            const bottomTextEl = document.getElementById('bottom-text');
+            const fontSizeEl = document.getElementById('font-size');
+            const fontSizeLabel = document.getElementById('font-size-label');
+            const textColorEl = document.getElementById('text-color');
+            const strokeColorEl = document.getElementById('stroke-color');
+            const outlineWidthEl = document.getElementById('outline-width');
+            const outlineWidthLabel = document.getElementById('outline-width-label');
+            const fontFamilyEl = document.getElementById('font-family');
+            const textAlignEl = document.getElementById('text-align');
+            const resetBtn = document.getElementById('reset-btn');
+            const downloadBtn = document.getElementById('download-btn');
+            const revertBtn = document.getElementById('revert-btn');
+
+            // --- Image Templates ---
+            const templates = [
+                { name: "Distracted BF", url: "https://i.imgflip.com/1bij.jpg" },
+                { name: "Woman/Cat", url: "https://i.imgflip.com/30b1gx.jpg" },
+                { name: "Roll Safe", url: "https://i.imgflip.com/1g8my4.jpg" },
+                { name: "Two Buttons", url: "https://i.imgflip.com/1g8my4.jpg" },
+                { name: "Drake", url: "https://i.imgflip.com/30b1gx.jpg" },
+                { name: "Change My Mind", url: "https://i.imgflip.com/24y43o.jpg" },
+                { name: "UNO", url: "https://i.imgflip.com/2m60qf.jpg" },
+                { name: "Spongebob", url: "https://i.imgflip.com/1otk96.jpg" },
+                { name: "Surprised Pikachu", url: "https://i.imgflip.com/2kpr0s.jpg" },
+            ];
+
+            // --- State ---
+            const img = new Image();
+            img.crossOrigin = "anonymous";
+            let topTextPos = { x: 0.5, y: 0.05 };
+            let bottomTextPos = { x: 0.5, y: 0.95 };
+            let topTextBounds = { x: 0, y: 0, width: 0, height: 0 };
+            let bottomTextBounds = { x: 0, y: 0, width: 0, height: 0 };
+            let isDragging = false;
+            let draggingText = null;
+            let dragOffset = { x: 0, y: 0 };
+            let currentTemplateIndex = 0;
+
+            // --- Core Drawing Function ---
+            function drawMeme() {
+                if (!img.src || img.naturalWidth === 0) return;
+
+                // 1. Resize canvas to fit image and container
+                const containerWidth = canvasContainer.clientWidth;
+                // Limit max width to avoid huge canvases
+                const maxWidth = Math.min(containerWidth, 800);
+                const scale = maxWidth / img.naturalWidth;
+                canvas.width = maxWidth;
+                canvas.height = img.naturalHeight * scale;
+
+                // 2. Clear canvas and draw image
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                // 3. Set up text style
+                const fontSize = (canvas.width * (fontSizeEl.value / 100));
+                const strokeWidth = (fontSize * (outlineWidthEl.value / 100));
+                const alignment = textAlignEl.value;
+
+                ctx.font = `${fontSize}px ${fontFamilyEl.value}`;
+                ctx.textAlign = alignment;
+                ctx.fillStyle = textColorEl.value;
+                ctx.strokeStyle = strokeColorEl.value;
+                ctx.lineWidth = strokeWidth;
+                const maxTextWidth = canvas.width * 0.9;
+
+                // 4. Draw Top Text
+                const topText = topTextEl.value.toUpperCase();
+                const topX_abs = topTextPos.x * canvas.width;
+                const topY_abs = topTextPos.y * canvas.height;
+                ctx.textBaseline = 'top';
+                const topMetrics = wrapText(ctx, topText, topX_abs, topY_abs, maxTextWidth, fontSize, false);
+
+                let topBoundsX = topX_abs - (alignment === 'center' ? topMetrics.width / 2 : (alignment === 'right' ? topMetrics.width : 0));
+
+                topTextBounds = {
+                    x: topBoundsX,
+                    y: topY_abs,
+                    width: topMetrics.width,
+                    height: topMetrics.height
+                };
+
+                // 5. Draw Bottom Text
+                const bottomText = bottomTextEl.value.toUpperCase();
+                const bottomX_abs = bottomTextPos.x * canvas.width;
+                const bottomY_abs = bottomTextPos.y * canvas.height;
+                ctx.textBaseline = 'bottom';
+                const bottomMetrics = wrapText(ctx, bottomText, bottomX_abs, bottomY_abs, maxTextWidth, fontSize, true);
+
+                let bottomBoundsX = bottomX_abs - (alignment === 'center' ? bottomMetrics.width / 2 : (alignment === 'right' ? bottomMetrics.width : 0));
+
+                bottomTextBounds = {
+                    x: bottomBoundsX,
+                    y: bottomY_abs - bottomMetrics.height,
+                    width: bottomMetrics.width,
+                    height: bottomMetrics.height
+                };
+
+                // 6. Update download button
+                updateDownloadLink();
+            }
+
+            function wrapText(context, text, x, y, maxWidth, lineHeight, fromBottom) {
+                const lines = [];
+                const words = text.split(' ');
+                let currentLine = '';
+                let maxWidthUsed = 0;
+
+                for (let i = 0; i < words.length; i++) {
+                    const testLine = currentLine + words[i] + ' ';
+                    const metrics = context.measureText(testLine);
+                    const testWidth = metrics.width;
+
+                    if (testWidth > maxWidth && i > 0) {
+                        lines.push(currentLine.trim());
+                        maxWidthUsed = Math.max(maxWidthUsed, context.measureText(currentLine.trim()).width);
+                        currentLine = words[i] + ' ';
+                    } else {
+                        currentLine = testLine;
+                    }
+                }
+                lines.push(currentLine.trim());
+                maxWidthUsed = Math.max(maxWidthUsed, context.measureText(currentLine.trim()).width);
+
+                if (fromBottom) {
+                    for (let i = lines.length - 1; i >= 0; i--) {
+                        const lineY = y - (lines.length - 1 - i) * lineHeight;
+                        context.strokeText(lines[i], x, lineY);
+                        context.fillText(lines[i], x, lineY);
+                    }
+                } else {
+                    for (let i = 0; i < lines.length; i++) {
+                        const lineY = y + i * lineHeight;
+                        context.strokeText(lines[i], x, lineY);
+                        context.fillText(lines[i], x, lineY);
+                    }
+                }
+
+                return {
+                    width: maxWidthUsed,
+                    height: lines.length * lineHeight
+                };
+            }
+
+            function resetControls() {
+                topTextEl.value = '';
+                bottomTextEl.value = '';
+                topTextPos = { x: 0.5, y: 0.05 };
+                bottomTextPos = { x: 0.5, y: 0.95 };
+                fontSizeEl.value = 10;
+                fontSizeLabel.textContent = 10;
+                outlineWidthEl.value = 5;
+                outlineWidthLabel.textContent = 5;
+                textColorEl.value = '#FFFFFF';
+                strokeColorEl.value = '#000000';
+                fontFamilyEl.value = 'Impact';
+                textAlignEl.value = 'center';
+            }
+
+            // --- Drag and Drop Handlers ---
+            function getMousePos(canvasEl, evt) {
+                const rect = canvasEl.getBoundingClientRect();
+                const scaleX = canvasEl.width / rect.width;
+                const scaleY = canvasEl.height / rect.height;
+                const clientX = evt.clientX || (evt.touches && evt.touches[0] ? evt.touches[0].clientX : 0);
+                const clientY = evt.clientY || (evt.touches && evt.touches[0] ? evt.touches[0].clientY : 0);
+
+                return {
+                    x: (clientX - rect.left) * scaleX,
+                    y: (clientY - rect.top) * scaleY
+                };
+            }
+
+            function isPointInBounds(x, y, bounds) {
+                return x >= bounds.x && x <= bounds.x + bounds.width &&
+                    y >= bounds.y && y <= bounds.y + bounds.height;
+            }
+
+            function handleMouseDown(e) {
+                e.preventDefault();
+                const mousePos = getMousePos(canvas, e.touches ? e.touches[0] : e);
+
+                if (isPointInBounds(mousePos.x, mousePos.y, topTextBounds)) {
+                    isDragging = true;
+                    draggingText = 'top';
+                    dragOffset.x = mousePos.x - (topTextPos.x * canvas.width);
+                    dragOffset.y = mousePos.y - (topTextPos.y * canvas.height);
+                } else if (isPointInBounds(mousePos.x, mousePos.y, bottomTextBounds)) {
+                    isDragging = true;
+                    draggingText = 'bottom';
+                    dragOffset.x = mousePos.x - (bottomTextPos.x * canvas.width);
+                    dragOffset.y = mousePos.y - (bottomTextPos.y * canvas.height);
+                } else {
+                    isDragging = false;
+                    draggingText = null;
+                }
+            }
+
+            function handleMouseUp(e) {
+                isDragging = false;
+                draggingText = null;
+                canvas.style.cursor = 'default';
+            }
+
+            function handleMouseMove(e) {
+                if (!isDragging || !draggingText) {
+                    const mousePos = getMousePos(canvas, e.touches ? e.touches[0] : e);
+                    if (isPointInBounds(mousePos.x, mousePos.y, topTextBounds) ||
+                        isPointInBounds(mousePos.x, mousePos.y, bottomTextBounds)) {
+                        canvas.style.cursor = 'move';
+                    } else {
+                        canvas.style.cursor = 'default';
+                    }
+                    return;
+                }
+
+                e.preventDefault();
+                const mousePos = getMousePos(canvas, e.touches ? e.touches[0] : e);
+                canvas.style.cursor = 'move';
+
+                const newX_abs = mousePos.x - dragOffset.x;
+                const newY_abs = mousePos.y - dragOffset.y;
+                const newX_rel = newX_abs / canvas.width;
+                const newY_rel = newY_abs / canvas.height;
+
+                if (draggingText === 'top') {
+                    topTextPos.x = newX_rel;
+                    topTextPos.y = newY_rel;
+                } else if (draggingText === 'bottom') {
+                    bottomTextPos.x = newX_rel;
+                    bottomTextPos.y = newY_rel;
+                }
+                drawMeme();
+            }
+
+            // --- Event Listeners ---
+            img.onload = drawMeme;
+
+            canvas.addEventListener('mousedown', handleMouseDown, { passive: false });
+            canvas.addEventListener('mouseup', handleMouseUp, { passive: false });
+            canvas.addEventListener('mouseleave', handleMouseUp, { passive: false });
+            canvas.addEventListener('mousemove', handleMouseMove, { passive: false });
+            canvas.addEventListener('touchstart', handleMouseDown, { passive: false });
+            canvas.addEventListener('touchend', handleMouseUp, { passive: false });
+            canvas.addEventListener('touchmove', handleMouseMove, { passive: false });
+
+            [topTextEl, bottomTextEl, fontSizeEl, textColorEl, strokeColorEl, outlineWidthEl, fontFamilyEl, textAlignEl].forEach(el => {
+                el.addEventListener('input', drawMeme);
+            });
+
+            fontSizeEl.addEventListener('input', (e) => { fontSizeLabel.textContent = e.target.value; });
+            outlineWidthEl.addEventListener('input', (e) => { outlineWidthLabel.textContent = e.target.value; });
+
+            resetBtn.addEventListener('click', () => {
+                resetControls();
+                drawMeme();
+            });
+
+            revertBtn.addEventListener('click', () => {
+                img.src = templates[0].url;
+                fileUpload.value = '';
+                urlUpload.value = '';
+                resetControls();
+                currentTemplateIndex = 0;
+            });
+
+            fileUpload.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        img.src = event.target.result;
+                        urlUpload.value = '';
+                        resetControls();
+                        currentTemplateIndex = -1;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            urlUpload.addEventListener('change', (e) => {
+                const url = e.target.value;
+                try {
+                    new URL(url);
+                    img.src = url;
+                    fileUpload.value = '';
+                    resetControls();
+                    currentTemplateIndex = -1;
+                } catch (_) {
+                    console.warn("Invalid URL entered");
+                }
+            });
+
+            window.addEventListener('resize', drawMeme);
+
+            function updateDownloadLink() {
+                setTimeout(() => {
+                    try {
+                        const dataURL = canvas.toDataURL('image/png');
+                        downloadBtn.href = dataURL;
+                    } catch (err) {
+                        console.error("Error creating data URL (CORS issue likely):", err);
+                    }
+                }, 100);
+            }
+
+            // --- Initialization ---
+            function initialize() {
+                templates.forEach((template, index) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'rounded-lg overflow-hidden focus:outline-none focus:ring-2 focus:ring-sky-500 transition-transform duration-150 ease-in-out hover:scale-105';
+                    btn.setAttribute('aria-label', `Use ${template.name} template`);
+
+                    const imgEl = document.createElement('img');
+                    imgEl.src = template.url;
+                    imgEl.alt = template.name;
+                    imgEl.className = 'w-full h-full object-cover aspect-square';
+                    imgEl.crossOrigin = "anonymous";
+
+                    btn.appendChild(imgEl);
+
+                    btn.addEventListener('click', () => {
+                        img.src = template.url;
+                        fileUpload.value = '';
+                        urlUpload.value = '';
+                        resetControls();
+                        currentTemplateIndex = index;
+                    });
+
+                    templateContainer.appendChild(btn);
+                });
+
+                if (templates.length > 0) {
+                    img.src = templates[0].url;
+                }
+            }
+
+            initialize();
+        });
+    </script>
+</body>
+
+</html>

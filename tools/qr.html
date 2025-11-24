@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>QR Pro — ToolNest</title>
+    <meta name="description" content="Advanced QR Code Generator. Custom colors, logos, and styles." />
+    <meta name="theme-color" content="#0ea5e9">
+
+    <link rel="icon" href="../favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="16x16" href="../icons/icon-16.png?v=2">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- qr-code-styling -->
+    <script type="text/javascript" src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+
+    <style>
+        :root {
+            --bg-light: #f1f5f9;
+            --bg-dark: #0f172a;
+            --glass-light: rgba(255, 255, 255, 0.95);
+            --glass-dark: rgba(15, 23, 42, 0.8);
+        }
+
+        html.dark {
+            --bg-light: #020617;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background-color: var(--bg-light);
+            color: #0f172a;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        html.dark body {
+            color: #f8fafc;
+        }
+
+        .glass {
+            background: var(--glass-light);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(203, 213, 225, 1);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+
+        html.dark .glass {
+            background: var(--glass-dark);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-40 glass border-b border-white/20 dark:border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <a href="../index.html" class="flex items-center gap-3 group">
+                <div
+                    class="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-500 to-indigo-500 flex items-center justify-center text-white shadow-lg shadow-sky-500/20 group-hover:scale-105 transition">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                    </svg>
+                </div>
+                <h1 class="text-xl font-bold tracking-tight">Back to Home</h1>
+            </a>
+
+            <button id="themeToggle"
+                class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800 transition text-gray-600 dark:text-gray-400">
+                <svg id="themeIcon" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-grow flex items-center justify-center p-4">
+        <div class="w-full max-w-5xl grid lg:grid-cols-2 gap-8">
+
+            <!-- Controls -->
+            <div class="glass rounded-3xl p-8 flex flex-col h-full">
+                <div class="mb-6">
+                    <h2 class="text-3xl font-extrabold mb-2">QR Pro</h2>
+                    <p class="text-gray-500 dark:text-gray-400">Create branded QR codes with custom styles.</p>
+                </div>
+
+                <div class="space-y-6 flex-grow overflow-y-auto max-h-[60vh] pr-2">
+
+                    <!-- Type Tabs -->
+                    <div class="flex p-1 bg-gray-100 dark:bg-slate-800 rounded-xl">
+                        <button onclick="setType('url')"
+                            class="type-btn flex-1 py-2 rounded-lg text-sm font-bold transition bg-white dark:bg-slate-700 shadow text-sky-600 dark:text-sky-400"
+                            data-type="url">URL</button>
+                        <button onclick="setType('text')"
+                            class="type-btn flex-1 py-2 rounded-lg text-sm font-bold transition text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+                            data-type="text">Text</button>
+                        <button onclick="setType('email')"
+                            class="type-btn flex-1 py-2 rounded-lg text-sm font-bold transition text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+                            data-type="email">Email</button>
+                    </div>
+
+                    <!-- Input Fields -->
+                    <div id="inputContainer">
+                        <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Content</label>
+                        <input type="text" id="qrData" placeholder="https://example.com"
+                            class="w-full p-4 rounded-xl bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-sky-500 outline-none transition"
+                            oninput="updateQR()">
+                    </div>
+
+                    <!-- Customization -->
+                    <div class="space-y-4">
+                        <h3
+                            class="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700 pb-2">
+                            Style</h3>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 mb-1">Dots Color</label>
+                                <div class="flex items-center gap-2">
+                                    <input type="color" id="dotsColor" value="#0ea5e9"
+                                        class="w-full h-10 rounded-lg cursor-pointer border-none p-0 bg-transparent"
+                                        onchange="updateQR()">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 mb-1">Background</label>
+                                <div class="flex items-center gap-2">
+                                    <input type="color" id="bgColor" value="#ffffff"
+                                        class="w-full h-10 rounded-lg cursor-pointer border-none p-0 bg-transparent"
+                                        onchange="updateQR()">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 mb-1">Dots Style</label>
+                            <select id="dotsType"
+                                class="w-full p-3 rounded-xl bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-gray-700 text-sm"
+                                onchange="updateQR()">
+                                <option value="rounded">Rounded</option>
+                                <option value="dots">Dots</option>
+                                <option value="classy">Classy</option>
+                                <option value="classy-rounded">Classy Rounded</option>
+                                <option value="square">Square</option>
+                                <option value="extra-rounded">Extra Rounded</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 mb-1">Corner Square Style</label>
+                            <select id="cornerType"
+                                class="w-full p-3 rounded-xl bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-gray-700 text-sm"
+                                onchange="updateQR()">
+                                <option value="extra-rounded">Extra Rounded</option>
+                                <option value="dot">Dot</option>
+                                <option value="square">Square</option>
+                            </select>
+                        </div>
+
+                        <!-- Logo -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 mb-1">Logo (Optional)</label>
+                            <input type="file" id="logoInput" accept="image/*"
+                                class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100 dark:file:bg-sky-900/30 dark:file:text-sky-300">
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Preview -->
+            <div
+                class="glass rounded-3xl p-8 flex flex-col items-center justify-center bg-gray-50 dark:bg-slate-900/50">
+                <div id="canvas" class="bg-white p-4 rounded-2xl shadow-xl mb-8"></div>
+
+                <div class="flex gap-4 w-full max-w-xs">
+                    <button onclick="downloadQR('png')"
+                        class="flex-1 py-3 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-bold shadow-lg shadow-sky-500/25 transition">PNG</button>
+                    <button onclick="downloadQR('svg')"
+                        class="flex-1 py-3 rounded-xl bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-slate-700 text-gray-700 dark:text-gray-300 font-bold transition">SVG</button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // Theme Logic
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark');
+        } else {
+            html.classList.remove('dark');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            localStorage.theme = html.classList.contains('dark') ? 'dark' : 'light';
+        });
+
+        // QR Logic
+        let qrCode;
+        let currentType = 'url';
+        let logoUrl = '';
+
+        function initQR() {
+            qrCode = new QRCodeStyling({
+                width: 300,
+                height: 300,
+                type: "svg",
+                data: "https://toolnest.app",
+                image: "",
+                dotsOptions: {
+                    color: "#0ea5e9",
+                    type: "rounded"
+                },
+                backgroundOptions: {
+                    color: "#ffffff",
+                },
+                imageOptions: {
+                    crossOrigin: "anonymous",
+                    margin: 10
+                },
+                cornersSquareOptions: {
+                    type: "extra-rounded"
+                }
+            });
+
+            qrCode.append(document.getElementById("canvas"));
+        }
+
+        function setType(type) {
+            currentType = type;
+            document.querySelectorAll('.type-btn').forEach(btn => {
+                if (btn.dataset.type === type) {
+                    btn.classList.add('bg-white', 'dark:bg-slate-700', 'shadow', 'text-sky-600', 'dark:text-sky-400');
+                    btn.classList.remove('text-gray-500', 'dark:text-gray-400');
+                } else {
+                    btn.classList.remove('bg-white', 'dark:bg-slate-700', 'shadow', 'text-sky-600', 'dark:text-sky-400');
+                    btn.classList.add('text-gray-500', 'dark:text-gray-400');
+                }
+            });
+
+            const input = document.getElementById('qrData');
+            if (type === 'url') input.placeholder = "https://example.com";
+            if (type === 'text') input.placeholder = "Enter your text here";
+            if (type === 'email') input.placeholder = "mailto:example@mail.com";
+
+            updateQR();
+        }
+
+        function updateQR() {
+            const data = document.getElementById('qrData').value || "https://toolnest.app";
+            const dotsColor = document.getElementById('dotsColor').value;
+            const bgColor = document.getElementById('bgColor').value;
+            const dotsType = document.getElementById('dotsType').value;
+            const cornerType = document.getElementById('cornerType').value;
+
+            qrCode.update({
+                data: data,
+                image: logoUrl,
+                dotsOptions: {
+                    color: dotsColor,
+                    type: dotsType
+                },
+                backgroundOptions: {
+                    color: bgColor,
+                },
+                cornersSquareOptions: {
+                    type: cornerType,
+                    color: dotsColor // Match dots color for consistency
+                }
+            });
+        }
+
+        // Logo Upload
+        document.getElementById('logoInput').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (f) {
+                logoUrl = f.target.result;
+                updateQR();
+            };
+            reader.readAsDataURL(file);
+        });
+
+        function downloadQR(ext) {
+            qrCode.download({ name: "qr-code", extension: ext });
+        }
+
+        // Init
+        initQR();
+
+    </script>
+</body>
+
+</html>
